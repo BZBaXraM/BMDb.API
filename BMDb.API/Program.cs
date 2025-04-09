@@ -1,5 +1,7 @@
 using BMDb.API;
-using BMDb.API.Extensions;
+using BMDb.Core;
+using BMDb.Infrastructure;
+using BMDb.Infrastructure.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,15 +18,15 @@ builder.Services.AddCors();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
-
-builder.Services.AuthenticationAndAuthorization(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddCore(builder.Configuration);
 builder.Services.AddSwagger(builder.Configuration);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    await app.InitialiseDatabaseAsync();
+    // await app.InitialiseDatabaseAsync();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

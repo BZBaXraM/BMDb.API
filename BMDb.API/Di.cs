@@ -1,17 +1,3 @@
-using System.Text;
-using BMDb.API.Auth;
-using BMDb.API.Data;
-using BMDb.API.DTOs.Validation;
-using BMDb.API.Mappings;
-using BMDb.API.Models;
-using BMDb.API.Providers;
-using BMDb.API.Services;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace BMDb.API;
@@ -66,65 +52,6 @@ public static class Di
                 }
             });
         });
-
-        services.AddDbContext<MovieContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-        });
-        services.AddDbContext<AuthContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("IdentityConnection"));
-        });
-
-        services.AddScoped<IMovieService, MovieService>();
-        services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-        services.AddFluentValidationAutoValidation();
-        services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
-
-        return services;
-    }
-
-    /// <summary>
-    /// AuthenticationAndAuthorization method.
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <returns></returns>
-    public static IServiceCollection AuthenticationAndAuthorization(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.AddScoped<IRequestUserProvider, RequestUserProvider>();
-        services.AddIdentity<AppUser, IdentityRole>()
-            .AddEntityFrameworkStores<AuthContext>();
-        services.AddScoped<IJwtService, JwtService>();
-
-        JwtConfig jwtConfig = new();
-        configuration.GetSection("JWT").Bind(jwtConfig);
-        services.AddSingleton(jwtConfig);
-
-        services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(jwt =>
-            {
-                jwt.SaveToken = true;
-                jwt.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    RequireExpirationTime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtConfig.Issuer,
-                    ValidAudience = jwtConfig.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret))
-                };
-            });
-
 
         return services;
     }

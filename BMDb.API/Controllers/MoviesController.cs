@@ -1,10 +1,6 @@
-using System.Text.Json;
-using AutoMapper;
-using BMDb.API.CustomFilters;
-using BMDb.API.Data;
-using BMDb.API.DTOs;
-using BMDb.API.Models;
-using BMDb.API.Services;
+using BMDb.API.Filters;
+using BMDb.Core.DTOs;
+using BMDb.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,48 +9,34 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// This class is used to define the MoviesController class.
 /// </summary>
-[Authorize]
+// [Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController : ControllerBase
 {
-    private readonly IMovieService _service;
-    private readonly IMapper _mapper;
-    private readonly ILogger<MoviesController> _logger;
+    private readonly IMoviesService _service;
 
     /// <summary>
     /// This constructor is used to inject the MovieContext class.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="mapper"></param>
-    /// <param name="logger"></param>
-    public MoviesController(MovieContext context, IMapper mapper, ILogger<MoviesController> logger)
+    /// <param name="service"></param>
+    public MoviesController(IMoviesService service)
     {
-        _service = new MovieService(context);
-        _mapper = mapper;
-        _logger = logger;
+        _service = service;
     }
 
     /// <summary>
     /// This method is used to get all movies.
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("get-all")]
     public async Task<IActionResult> GetMoviesAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
         [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
         [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("GetMoviesAsync Action Method was invoked");
-        _logger.LogWarning("This is a warring log");
-        _logger.LogError("This is a error log");
-        var movies = await _service.GetMoviesAsync(filterOn, filterQuery, sortBy,
-            isAscending ?? true,
-            pageNumber,
+        var movies = await _service.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber,
             pageSize, cancellationToken);
-        _logger.LogInformation("Finished GetMoviesAsync request with data: {Serialize}",
-            JsonSerializer.Serialize(movies));
-
-        return Ok(_mapper.Map<IEnumerable<MovieDto>>(movies));
+        return Ok(movies);
     }
 
 
@@ -64,10 +46,18 @@ public class MoviesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("{id:guid}")]
+    [Authorize("Admin")]
+    [HttpGet("get-by-id/{id:guid}")]
     public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => Ok(_mapper.Map<MovieDto>(await _service.GetMovieByIdAsync(id, cancellationToken)));
+    {
+        var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
+        if (movie is null)
+        {
+            return NotFound();
+        }
 
+        return Ok(movie);
+    }
 
     /// <summary>
     /// This method is used to add a movie.
@@ -75,18 +65,15 @@ public class MoviesController : ControllerBase
     /// <param name="requestDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
+    [Authorize("Admin")]
+    [HttpPost("add-movie")]
     [ValidateModel]
-    public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequestDto requestDto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequestDto requestDto,
+        CancellationToken cancellationToken = default)
     {
-        var movieModel = _mapper.Map<Movie>(requestDto);
-        if (movieModel is null)
-        {
-            return NotFound();
-        }
+        var movie = await _service.AddMovieAsync(requestDto, cancellationToken);
 
-        var movieDto = _mapper.Map<MovieDto>(await _service.AddMovieAsync(movieModel, cancellationToken));
-        return CreatedAtAction(nameof(GetMovieById), new { id = movieDto.Id }, movieDto);
+        return CreatedAtAction(nameof(GetMovieById), new { id = movie.Id }, movie);
     }
 
     /// <summary>
@@ -96,18 +83,19 @@ public class MoviesController : ControllerBase
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPut("{id:guid}")]
+    [Authorize("Admin")]
+    [HttpPut("update-movie/{id:guid}")]
     [ValidateModel]
     public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, [FromBody] UpdateMovieRequestDto request,
         CancellationToken cancellationToken = default)
     {
-        var movieModel = _mapper.Map<Movie>(request);
-        if (movieModel is null)
+        var movie = await _service.UpdateMovieAsync(id, request, cancellationToken);
+        if (movie is null)
         {
             return NotFound();
         }
 
-        return Ok(_mapper.Map<MovieDto>(await _service.UpdateMovieAsync(id, movieModel, cancellationToken)));
+        return Ok(movie);
     }
 
     /// <summary>
@@ -115,11 +103,19 @@ public class MoviesController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpDelete("{id:guid}")]
+    [Authorize("Admin")]
+    [HttpDelete("delete-movie/{id:guid}")]
     public async Task<IActionResult> DeleteMovieAsync([FromRoute] Guid id,
         CancellationToken cancellationToken = default)
-        => Ok(_mapper.Map<MovieDto>(await _service.DeleteMovieAsync(id, cancellationToken)));
+    {
+        var movie = await _service.DeleteMovieAsync(id, cancellationToken);
+        if (!movie)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 
 
     /// <summary>
@@ -129,8 +125,13 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("title/{title}")]
-    public async Task<IActionResult> GetMovieByTitleAsync(string title, CancellationToken cancellationToken = default)
-        => Ok(await _service.GetMovieByTitleAsync(title, cancellationToken));
+    public async Task<IActionResult> GetMovieByTitleAsync(string title,
+        CancellationToken cancellationToken = default)
+    {
+        var movies = await _service.GetMovieByTitleAsync(title, cancellationToken);
+
+        return Ok(movies);
+    }
 
 
     /// <summary>
@@ -141,7 +142,11 @@ public class MoviesController : ControllerBase
     /// <returns></returns>
     [HttpGet("year/{year}")]
     public async Task<IActionResult> GetMovieByYearAsync(string year, CancellationToken cancellationToken = default)
-        => Ok(await _service.GetMovieByYearAsync(year, cancellationToken));
+    {
+        var movies = await _service.GetMovieByYearAsync(year, cancellationToken);
+
+        return Ok(movies);
+    }
 
 
     /// <summary>
@@ -151,7 +156,11 @@ public class MoviesController : ControllerBase
     /// <returns></returns>
     [HttpGet("director/{director}")]
     public async Task<IActionResult> GetMovieByDirectorAsync(string director)
-        => Ok(await _service.GetMovieByDirectorAsync(director));
+    {
+        var movies = await _service.GetMovieByDirectorAsync(director);
+
+        return Ok(movies);
+    }
 
 
     /// <summary>
@@ -161,8 +170,13 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("genre/{genre}")]
-    public async Task<IActionResult> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default)
-        => Ok(await _service.GetMovieByGenreAsync(genre, cancellationToken));
+    public async Task<IActionResult> GetMovieByGenreAsync(string genre,
+        CancellationToken cancellationToken = default)
+    {
+        var movies = await _service.GetMovieByGenreAsync(genre, cancellationToken);
+
+        return Ok(movies);
+    }
 
     /// <summary>
     /// This method is used to get a movie by imdb id.
@@ -171,6 +185,11 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("imdb/{imdb}")]
-    public async Task<IActionResult> GetMovieByImdbIdAsync(string imdb, CancellationToken cancellationToken = default)
-        => Ok(await _service.GetMovieByImdbIdAsync(imdb, cancellationToken));
+    public async Task<IActionResult> GetMovieByImdbIdAsync(string imdb,
+        CancellationToken cancellationToken = default)
+    {
+        var movies = await _service.GetMovieByImdbIdAsync(imdb, cancellationToken);
+
+        return Ok(movies);
+    }
 }

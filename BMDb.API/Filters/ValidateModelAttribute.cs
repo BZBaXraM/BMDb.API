@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace BMDb.API.CustomFilters;
+namespace BMDb.API.Filters;
 
 /// <inheritdoc />
 public class ValidateModelAttribute : ActionFilterAttribute
