@@ -5,7 +5,7 @@ namespace BMDb.API.Services;
 /// <summary>
 /// Interface for token service.
 /// </summary>
-public interface ITokenService
+public interface IJwtService
 {
     /// <summary>
     /// Creates a token for a user.

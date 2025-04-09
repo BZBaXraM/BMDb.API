@@ -5,7 +5,7 @@ namespace BMDb.API.Services;
 /// <summary>
 /// This interface is used to define the contract for the AsyncMovieService class.
 /// </summary>
-public interface IAsyncMovieService
+public interface IMovieService
 {
     /// <summary>
     /// This method is used to get all movies.
@@ -88,10 +88,4 @@ public interface IAsyncMovieService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IEnumerable<Movie>> GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// This method is used to get a movie by type.
-    /// </summary>
-    /// <returns></returns>
-    Task<int> GetTotalCountAsync();
 }

@@ -1,13 +1,13 @@
-using BMDb.API.Entities;
+using BMDb.API.Data;
 using BMDb.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BMDb.API.Services;
 
 /// <summary>
-/// This class is used to implement the IAsyncMovieService interface.
+/// This class is used to implement the IMovieService interface.
 /// </summary>
-public class MovieService : IAsyncMovieService
+public class MovieService : IMovieService
 {
     private readonly MovieContext _context;
 
@@ -97,7 +97,7 @@ public class MovieService : IAsyncMovieService
     {
         var item = await _context.Movies.FindAsync(id, cancellationToken);
         if (item is null) return null!;
-        
+
         return new Movie
         {
             Id = item.Id,
@@ -224,12 +224,4 @@ public class MovieService : IAsyncMovieService
     public async Task<IEnumerable<Movie>> GetMovieByImdbIdAsync(string imdbId,
         CancellationToken cancellationToken = default)
         => await _context.Movies.Where(x => x.ImdbId == imdbId).AsNoTracking().ToListAsync(cancellationToken);
-
-
-    /// <summary>
-    /// This method is used to get the total count of movies.
-    /// </summary>
-    /// <returns></returns>
-    public Task<int> GetTotalCountAsync()
-        => _context.Movies.CountAsync();
 }

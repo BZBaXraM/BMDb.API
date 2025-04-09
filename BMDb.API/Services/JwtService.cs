@@ -9,7 +9,7 @@ namespace BMDb.API.Services;
 /// <summary>
 /// Interface for token service.
 /// </summary>
-public class TokenService : ITokenService
+public class JwtService : IJwtService
 {
     private readonly JwtConfig _config;
 
@@ -17,7 +17,7 @@ public class TokenService : ITokenService
     /// Constructor
     /// </summary>
     /// <param name="config"></param>
-    public TokenService(JwtConfig config)
+    public JwtService(JwtConfig config)
         => _config = config;
 
 

@@ -1,7 +1,7 @@
 using System.Text;
 using BMDb.API.Auth;
+using BMDb.API.Data;
 using BMDb.API.DTOs.Validation;
-using BMDb.API.Entities;
 using BMDb.API.Mappings;
 using BMDb.API.Models;
 using BMDb.API.Providers;
@@ -76,7 +76,7 @@ public static class Di
             options.UseNpgsql(configuration.GetConnectionString("IdentityConnection"));
         });
 
-        services.AddScoped<IAsyncMovieService, MovieService>();
+        services.AddScoped<IMovieService, MovieService>();
         services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
@@ -97,7 +97,7 @@ public static class Di
         services.AddScoped<IRequestUserProvider, RequestUserProvider>();
         services.AddIdentity<AppUser, IdentityRole>()
             .AddEntityFrameworkStores<AuthContext>();
-        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IJwtService, JwtService>();
 
         JwtConfig jwtConfig = new();
         configuration.GetSection("JWT").Bind(jwtConfig);
@@ -125,14 +125,6 @@ public static class Di
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("CanTest", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.Requirements.Add(new CanTestRequirement());
-            });
-        });
 
         return services;
     }

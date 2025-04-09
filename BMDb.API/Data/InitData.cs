@@ -1,26 +1,11 @@
 using BMDb.API.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace BMDb.API.Entities;
+namespace BMDb.API.Data;
 
-/// <inheritdoc />
-public class MovieContext : DbContext
+public static class InitData
 {
-    /// <inheritdoc />
-    public MovieContext(DbContextOptions<MovieContext> options) : base(options)
-    {
-    }
-
-    
-    /// <summary>
-    /// Movies DbSet
-    /// </summary>
-    public virtual DbSet<Movie> Movies => Set<Movie>();
-
-    /// <inheritdoc />
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        var movies = new List<Movie>
+    public static IReadOnlyList<Movie> Movies
+        => new List<Movie>()
         {
             new()
             {
@@ -231,9 +216,6 @@ public class MovieContext : DbContext
                 Plot =
                     "As Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, he is sued by the twins who claimed he stole their idea, and by the co-founder who was later squeezed out of the business.",
                 ImdbId = "tt1285016"
-            } 
+            }
         };
-
-        modelBuilder.Entity<Movie>().HasData(movies);
-    }
 }

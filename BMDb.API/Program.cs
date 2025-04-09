@@ -1,4 +1,5 @@
 using BMDb.API;
+using BMDb.API.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    await app.InitialiseDatabaseAsync();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -36,6 +38,8 @@ app.UseCors(x => x
 app.UseHsts();
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

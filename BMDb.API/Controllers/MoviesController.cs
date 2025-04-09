@@ -1,8 +1,8 @@
 using System.Text.Json;
 using AutoMapper;
 using BMDb.API.CustomFilters;
+using BMDb.API.Data;
 using BMDb.API.DTOs;
-using BMDb.API.Entities;
 using BMDb.API.Models;
 using BMDb.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +11,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace BMDb.API.Controllers;
 
 /// <summary>
-/// This class is used to define the MovieController class.
+/// This class is used to define the MoviesController class.
 /// </summary>
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class MovieController : ControllerBase
+public class MoviesController : ControllerBase
 {
-    private readonly IAsyncMovieService _service;
+    private readonly IMovieService _service;
     private readonly IMapper _mapper;
-    private readonly ILogger<MovieController> _logger;
+    private readonly ILogger<MoviesController> _logger;
 
     /// <summary>
     /// This constructor is used to inject the MovieContext class.
@@ -28,7 +28,7 @@ public class MovieController : ControllerBase
     /// <param name="context"></param>
     /// <param name="mapper"></param>
     /// <param name="logger"></param>
-    public MovieController(MovieContext context, IMapper mapper, ILogger<MovieController> logger)
+    public MoviesController(MovieContext context, IMapper mapper, ILogger<MoviesController> logger)
     {
         _service = new MovieService(context);
         _mapper = mapper;
@@ -173,12 +173,4 @@ public class MovieController : ControllerBase
     [HttpGet("imdb/{imdb}")]
     public async Task<IActionResult> GetMovieByImdbIdAsync(string imdb, CancellationToken cancellationToken = default)
         => Ok(await _service.GetMovieByImdbIdAsync(imdb, cancellationToken));
-
-    /// <summary>
-    /// This method is used to get the total count of movies.
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("count")]
-    public async Task<IActionResult> GetTotalCountAsync()
-        => Ok(await _service.GetTotalCountAsync());
 }

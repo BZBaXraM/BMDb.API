@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ITokenService _service;
+    private readonly IJwtService _service;
 
     /// <summary>
     /// Register a new user.
@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     /// <param name="roleManager"></param>
     /// <param name="service"></param>
     public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-        RoleManager<IdentityRole> roleManager, ITokenService service)
+        RoleManager<IdentityRole> roleManager, IJwtService service)
     {
         _userManager = userManager;
         _signInManager = signInManager;
