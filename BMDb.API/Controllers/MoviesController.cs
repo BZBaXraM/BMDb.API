@@ -1,9 +1,3 @@
-using BMDb.API.Filters;
-using BMDb.Core.DTOs;
-using BMDb.Core.ServiceContracts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace BMDb.API.Controllers;
 
 /// <summary>
@@ -29,6 +23,7 @@ public class MoviesController : ControllerBase
     /// This method is used to get all movies.
     /// </summary>
     /// <returns></returns>
+    [Authorize("User")]
     [HttpGet("get-all")]
     public async Task<IActionResult> GetMoviesAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
         [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
@@ -46,7 +41,7 @@ public class MoviesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
+    [Authorize("User")]
     [HttpGet("get-by-id/{id:guid}")]
     public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {

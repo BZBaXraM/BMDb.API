@@ -1,5 +1,3 @@
-using Microsoft.OpenApi.Models;
-
 namespace BMDb.API;
 
 /// <summary>
@@ -11,10 +9,26 @@ public static class Di
     /// AddRepositories method.
     /// </summary>
     /// <param name="services"></param>
-    /// <param name="configuration"></param>
     /// <returns></returns>
-    public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        var builder = WebApplication.CreateBuilder();
+
+        var logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("/Logs/BMDb_Log.txt", rollingInterval: RollingInterval.Day)
+            .MinimumLevel.Information()
+            .CreateLogger();
+
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog(logger);
+
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+
+        services.AddCors();
+
         services.AddHttpContextAccessor();
         services.AddSwaggerGen(setup =>
         {
