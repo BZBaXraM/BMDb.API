@@ -1,7 +1,4 @@
-using BMDb.API.Data;
-using Microsoft.EntityFrameworkCore;
-
-namespace BMDb.API.Extensions;
+namespace BMDb.Infrastructure.Extensions;
 
 /// <summary>
 /// 

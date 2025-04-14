@@ -1,18 +1,15 @@
-using BMDb.API.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace BMDb.API.Data;
+namespace BMDb.Infrastructure.Data;
 
 /// <inheritdoc />
-public class AuthContext : IdentityDbContext<AppUser>
+public class AuthContext : DbContext
 {
     /// <inheritdoc />
     public AuthContext(DbContextOptions<AuthContext> options) : base(options)
     {
     }
+
     /// <summary>
     /// Users DbSet
     /// </summary>
-    public override DbSet<AppUser> Users => Set<AppUser>();
+    public virtual DbSet<User> Users => Set<User>();
 }

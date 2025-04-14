@@ -1,10 +1,12 @@
-namespace BMDb.API.DTOs;
+namespace BMDb.Core.DTOs;
 
 /// <summary>
 ///    DTO for the LoginResponse
 /// </summary>
 public class LoginResponseDto
 {
+    public string AccessCode { get; set; } = string.Empty;
+
     /// <summary>
     ///   AccessToken
     /// </summary>

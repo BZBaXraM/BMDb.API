@@ -1,7 +1,4 @@
-using BMDb.Core.DTOs;
-using FluentValidation;
-
-namespace BMDb.Core.Validation;
+namespace BMDb.Core.Validators;
 
 /// <summary>
 ///   This class is used to validate the RegisterRequestDto.
@@ -14,6 +11,5 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
     public RegisterRequestValidator()
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(8).Password(mustContainDigit: false);
     }
 }

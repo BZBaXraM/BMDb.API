@@ -1,12 +1,9 @@
-namespace BMDb.API.DTOs;
+namespace BMDb.Core.DTOs;
 
 /// <summary>
 /// RefreshTokenRequest
 /// </summary>
 public class RefreshTokenRequest
 {
-    /// <summary>
-    /// RefreshToken
-    /// </summary>
-    public string RefreshToken { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = null!;
 }

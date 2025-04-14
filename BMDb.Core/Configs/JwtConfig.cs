@@ -1,4 +1,4 @@
-namespace BMDb.API.Auth;
+namespace BMDb.Core.Configs;
 
 /// <summary>
 /// JwtConfig

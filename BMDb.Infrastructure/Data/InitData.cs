@@ -1,11 +1,9 @@
-using BMDb.API.Models;
-
-namespace BMDb.API.Data;
+namespace BMDb.Infrastructure.Data;
 
 public static class InitData
 {
     public static IReadOnlyList<Movie> Movies
-        => new List<Movie>()
+        => new List<Movie>
         {
             new()
             {

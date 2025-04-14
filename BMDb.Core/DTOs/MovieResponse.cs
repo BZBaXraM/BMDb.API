@@ -1,9 +1,9 @@
 namespace BMDb.Core.DTOs;
 
 /// <summary>
-/// This class is used to define the MovieDto class.
+/// This class is used to define the MovieResponse class.
 /// </summary>
-public class MovieDto
+public class MovieResponse
 {
     /// <summary>
     /// This property is used to define the Id property.

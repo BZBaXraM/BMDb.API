@@ -1,7 +1,4 @@
-using BMDb.Core.DTOs;
-using FluentValidation;
-
-namespace BMDb.Core.Validation;
+namespace BMDb.Core.Validators;
 
 /// <inheritdoc />
 public class LoginRequestValidator : AbstractValidator<LoginRequestDto>
@@ -9,7 +6,6 @@ public class LoginRequestValidator : AbstractValidator<LoginRequestDto>
     /// <inheritdoc />
     public LoginRequestValidator()
     {
-        RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
+        RuleFor(x => x.AccessCode).NotEmpty();
     }
 }

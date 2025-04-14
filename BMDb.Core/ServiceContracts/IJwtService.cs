@@ -1,6 +1,4 @@
-using System.Security.Claims;
-
-namespace BMDb.API.Services;
+namespace BMDb.Core.ServiceContracts;
 
 /// <summary>
 /// Interface for token service.
@@ -8,16 +6,59 @@ namespace BMDb.API.Services;
 public interface IJwtService
 {
     /// <summary>
-    /// Creates a token for a user.
+    /// Generate a security token
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="email"></param>
-    /// <param name="roles"></param>
-    /// <param name="userClaims"></param>
+    /// <param name="user"></param>
     /// <returns></returns>
-    string GenerateSecurityToken(
-        string id,
-        string email,
-        IEnumerable<string> roles,
-        IEnumerable<Claim> userClaims);
+    string GenerateSecurityToken(User user);
+
+    /// <summary>
+    /// Generate an email confirmation token
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    string GenerateEmailConfirmationToken(User user);
+
+    /// <summary>
+    /// Validate an email confirmation token
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    bool ValidateEmailConfirmationToken(User user, string token);
+
+    /// <summary>
+    /// Generate a forget password token
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    string GenerateForgetPasswordToken(User user);
+
+    /// <summary>
+    /// Validate a forget password token
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    bool ValidateForgetPasswordToken(User user, string token);
+
+    /// <summary>
+    /// Get the principal from a token
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    ClaimsPrincipal GetPrincipalFromToken(string token);
+
+    /// <summary>
+    /// Generate a refresh token
+    /// </summary>
+    /// <returns></returns>
+    string GenerateRefreshToken();
+
+    /// <summary>
+    /// Generate a refresh token for email
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    string GenerateRefreshTokenForEmail(User user);
 }

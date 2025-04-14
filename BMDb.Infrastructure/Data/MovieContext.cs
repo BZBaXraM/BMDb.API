@@ -1,7 +1,4 @@
-using BMDb.API.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace BMDb.API.Data;
+namespace BMDb.Infrastructure.Data;
 
 /// <inheritdoc />
 public class MovieContext : DbContext

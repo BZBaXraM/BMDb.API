@@ -1,4 +1,4 @@
-namespace BMDb.API.DTOs;
+namespace BMDb.Core.DTOs;
 
 /// <summary>
 /// This class is used to define the UpdateMovieRequestDto class.

@@ -1,7 +1,4 @@
-using System.Text.RegularExpressions;
-using FluentValidation;
-
-namespace BMDb.Core.Validation;
+namespace BMDb.Core.Validators;
 
 
 /// <summary>

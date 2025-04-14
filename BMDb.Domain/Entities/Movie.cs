@@ -1,4 +1,4 @@
-namespace BMDb.API.Models;
+namespace BMDb.Domain.Entities;
 
 /// <summary>
 /// This class is used to define the Movie class.
