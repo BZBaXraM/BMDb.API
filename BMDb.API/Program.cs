@@ -1,5 +1,3 @@
-using BMDb.Infrastructure.Extensions;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
@@ -7,6 +5,8 @@ builder.Services
     .AddCore(builder.Configuration);
 
 builder.Services.AddServices();
+
+builder.Services.AddScoped<ExceptionHandleMiddleware>();
 
 var app = builder.Build();
 
@@ -28,6 +28,8 @@ app.UseHsts();
 app.UseRouting();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandleMiddleware>();
 
 app.UseStaticFiles();
 

@@ -5,17 +5,29 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
     private readonly IEmailService _emailService;
+    private readonly RegisterRequestValidator _registerRequestValidator;
+    private readonly LoginRequestValidator _loginRequestValidator;
 
-    public AuthService(IUserRepository userRepository, IJwtService jwtService, IEmailService emailService)
+    public AuthService(IUserRepository userRepository, IJwtService jwtService, IEmailService emailService,
+        RegisterRequestValidator registerRequestValidator, LoginRequestValidator loginRequestValidator)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
         _emailService = emailService;
+        _registerRequestValidator = registerRequestValidator;
+        _loginRequestValidator = loginRequestValidator;
     }
 
     public async Task<RegisterResponse> RegisterUserAsync(RegisterRequestDto registerRequestDto)
     {
         var accessCode = Guid.NewGuid().ToString()[..6];
+
+        // Validate the register request
+        var validationResult = await _registerRequestValidator.ValidateAsync(registerRequestDto);
+        if (!validationResult.IsValid)
+        {
+            throw new Exception("Invalid registration request");
+        }
 
         // Create a new user
         var user = new User
@@ -25,10 +37,8 @@ public class AuthService : IAuthService
             RefreshToken = _jwtService.GenerateRefreshToken()
         };
 
-        // Save the user to the database
         await _userRepository.AddUserAsync(user);
 
-        // Send the access code to the user's email
         await _emailService.SendAccessCodeAsync(registerRequestDto.Email, accessCode);
 
 
@@ -46,6 +56,13 @@ public class AuthService : IAuthService
         if (user == null)
         {
             throw new Exception("Invalid access code");
+        }
+
+        // Validate the login request
+        var validationResult = await _loginRequestValidator.ValidateAsync(loginRequestDto);
+        if (!validationResult.IsValid)
+        {
+            throw new Exception("Invalid login request");
         }
 
         return new LoginResponseDto

@@ -3,7 +3,7 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// This class is used to define the MoviesController class.
 /// </summary>
-// [Authorize]
+[Authorize("User")]
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController : ControllerBase
@@ -23,7 +23,6 @@ public class MoviesController : ControllerBase
     /// This method is used to get all movies.
     /// </summary>
     /// <returns></returns>
-    [Authorize("User")]
     [HttpGet("get-all")]
     public async Task<IActionResult> GetMoviesAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
         [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
@@ -41,7 +40,6 @@ public class MoviesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [Authorize("User")]
     [HttpGet("get-by-id/{id:guid}")]
     public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
@@ -53,65 +51,6 @@ public class MoviesController : ControllerBase
 
         return Ok(movie);
     }
-
-    /// <summary>
-    /// This method is used to add a movie.
-    /// </summary>
-    /// <param name="requestDto"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [Authorize("Admin")]
-    [HttpPost("add-movie")]
-    [ValidateModel]
-    public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequestDto requestDto,
-        CancellationToken cancellationToken = default)
-    {
-        var movie = await _service.AddMovieAsync(requestDto, cancellationToken);
-
-        return CreatedAtAction(nameof(GetMovieById), new { id = movie.Id }, movie);
-    }
-
-    /// <summary>
-    /// This method is used to update a movie.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [Authorize("Admin")]
-    [HttpPut("update-movie/{id:guid}")]
-    [ValidateModel]
-    public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, [FromBody] UpdateMovieRequestDto request,
-        CancellationToken cancellationToken = default)
-    {
-        var movie = await _service.UpdateMovieAsync(id, request, cancellationToken);
-        if (movie is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(movie);
-    }
-
-    /// <summary>
-    /// This method is used to delete a movie.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    [Authorize("Admin")]
-    [HttpDelete("delete-movie/{id:guid}")]
-    public async Task<IActionResult> DeleteMovieAsync([FromRoute] Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        var movie = await _service.DeleteMovieAsync(id, cancellationToken);
-        if (!movie)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
-    }
-
 
     /// <summary>
     /// This method is used to get a movie by title.
@@ -143,9 +82,8 @@ public class MoviesController : ControllerBase
         return Ok(movies);
     }
 
-
     /// <summary>
-    /// This method is used to get a movie by director.
+    /// This method is used to get a movie by a director.
     /// </summary>
     /// <param name="director"></param>
     /// <returns></returns>
@@ -156,7 +94,6 @@ public class MoviesController : ControllerBase
 
         return Ok(movies);
     }
-
 
     /// <summary>
     /// This method is used to get a movie by genre.

@@ -26,10 +26,8 @@ public static class Di
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-
         services.AddCors();
-
-        services.AddHttpContextAccessor();
+        
         services.AddSwaggerGen(setup =>
         {
             setup.SwaggerDoc("v1", new OpenApiInfo
@@ -62,7 +60,7 @@ public static class Di
                             Id = "Bearer"
                         }
                     },
-                    Array.Empty<string>()
+                    []
                 }
             });
         });

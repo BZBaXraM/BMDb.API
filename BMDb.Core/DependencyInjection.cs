@@ -5,11 +5,16 @@ public static class DependencyInjection
     public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IMoviesService, MoviesService>();
 
         services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
+
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
         JwtConfig jwtConfig = new();
         configuration.GetSection("JWT").Bind(jwtConfig);
@@ -33,10 +38,16 @@ public static class DependencyInjection
                 };
             });
 
+
         services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
+        services.AddHttpContextAccessor();
+
+
+        services.AddSingleton<RegisterRequestValidator>();
+        services.AddSingleton<LoginRequestValidator>();
 
         services.AddAuthorizationBuilder()
             .AddPolicy("Admin", policy =>

@@ -21,33 +21,7 @@ public interface IMoviesService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<MovieResponse?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// This method is used to add a movie.
-    /// </summary>
-    /// <param name="movie"></param>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<MovieResponse> AddMovieAsync(AddMovieRequestDto request, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// This method is used to update a movie.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="movie"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequestDto request, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// This method is used to delete a movie.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<bool> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default);
-
+    
     /// <summary>
     /// This method is used to get a movie by title.
     /// </summary>
@@ -65,12 +39,13 @@ public interface IMoviesService
     Task<IEnumerable<MovieResponse>> GetMovieByYearAsync(string year, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// This method is used to get a movie by director.
+    /// This method is used to get a movie by a director.
     /// </summary>
     /// <param name="director"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<MovieResponse>> GetMovieByDirectorAsync(string director, CancellationToken cancellationToken = default);
+    Task<IEnumerable<MovieResponse>> GetMovieByDirectorAsync(string director,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method is used to get a movie by genre.
@@ -86,5 +61,6 @@ public interface IMoviesService
     /// <param name="imdbId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<MovieResponse>> GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<MovieResponse>>
+        GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
 }
