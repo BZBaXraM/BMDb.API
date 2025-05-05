@@ -1,6 +1,57 @@
 # BMDb API
-BMDb API.
 
-Моя курсовая работа по .NET Core C# была непростым, но захватывающим проектом. Я создал свой собственный веб-API для фильмов, вдохновленный такими популярными ресурсами, как "КиноПоиск" и "IMDb". Для этой задачи я взял за основу открытое API OMDb и разработал весь бэкенд на любимом мной фреймворке ASP.NET Core, используя паттерн проектирования MVC. Хотя в этой работе я не использовал компонент "Views", моя архитектура все равно была основана на принципах MVC, а также включала в себя Dependency Injection для управления зависимостями.
-Для обеспечения удобной работы с базой данных, я использовал "Entity Framework Core" в сочетании с базой данных "PostgreSQL". Фронтенд-часть пришлось реализовать с использованием "чистого" MVC, так как это было оптимальным решением для данного проекта, хотя в будущем я планирую переписать его на React JS, чтобы улучшить пользовательский опыт. Но важно отметить, что фокус в этой работе был сосредоточен на бэкенде, и я предпочел оставить фронтенд профессионалам.
-Внутри приложения я реализовал функционал, который включает в себя регистрацию администратора для управления фильмами (добавление, редактирование и удаление) и также поиск фильмов. 
+BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity Framework Core.
+
+## Features
+
+- User authentication and authorization using JWT tokens with refresh tokens
+- CRUD operations for movies with an admin role
+- Search movies by title, genre, director, IMDB id and release date
+- Pagination and sorting for movie lists
+
+## Technologies Used
+
+- ASP.NET Core
+- Entity Framework Core
+- PostgresSQL
+- AutoMapper
+- FluentValidation
+- JWT Bearer Authentication with Email Confirmation
+- Cors
+- Serilog
+- Swagger
+- Amazon S3 for movie poster storage
+
+## Endpoints
+
+### Authentication
+
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login-with-access-code` - Login with access code
+- `POST /api/auth/refresh-token` - Refresh JWT token
+
+### Movies
+
+- `GET /api/movies/get-all` - Get all movies
+- `GET /api/movies/get-by-id/{id}` - Get a movie by ID
+- `GET /api/movies/title/{title}` - Get movies by title
+- `GET /api/movies/genre/{genre}` - Get movies by genre
+- `GET /api/movies/director/{director}` - Get movies by director
+- `GET /api/movies/year/{year}` - Get movies by release year
+- `GET /api/movies/imdb/{imdbId}` - Get movies by IMDB ID
+
+### Admin
+
+- `POST /api/admin/add-movie` - Add a new movie
+- `PUT /api/admin/update-movie/{id}` - Update a movie
+- `DELETE /api/admin/delete-movie/{id}` - Delete a movie
+- `GET /api/movies/get-by-id/{id}` - Get a movie by ID
+
+## Architecture
+
+The project follows a clean architecture pattern with the following layers:
+
+- **Presentation Layer**: Contains the API controllers and Middlewares.
+- **Core Layer**: Contains the business logic and application services.
+- **Infrastructure Layer**: Contains the data access layer, including Entity Framework Core and repository pattern.
+- **Domain Layer**: Contains the domain entities.
