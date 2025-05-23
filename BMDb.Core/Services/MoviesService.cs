@@ -50,12 +50,12 @@ public class MoviesService : IMoviesService
         return _mapper.Map<List<MovieResponse>>(movies);
     }
 
-    public async Task<IEnumerable<MovieResponse>> GetMovieByGenreAsync(string genre,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _moviesRepository.GetMovieByGenreAsync(genre, cancellationToken);
-        return _mapper.Map<List<MovieResponse>>(movies);
-    }
+    // public async Task<IEnumerable<MovieResponse>> GetMovieByGenreAsync(string genre,
+    //     CancellationToken cancellationToken = default)
+    // {
+    //     var movies = await _moviesRepository.GetMovieByGenreAsync(genre, cancellationToken);
+    //     return _mapper.Map<List<MovieResponse>>(movies);
+    // }
 
     public async Task<IEnumerable<MovieResponse>> GetMovieByImdbIdAsync(string imdbId,
         CancellationToken cancellationToken = default)

@@ -15,6 +15,7 @@ public class UpdateMovieRequestDto
     /// This property is used to define the Poster property.
     /// </summary>
     public string? Poster { get; set; }
+
     /// <summary>
     /// This property is used to define the Trailer property.
     /// </summary>
@@ -36,12 +37,13 @@ public class UpdateMovieRequestDto
     /// This property is used to define the Genre property.
     /// </summary>
 
-    public string Genre { get; set; } = string.Empty;
-    
+    public List<string> Genres { get; set; } = [];
+
     /// <summary>
     /// This property is used to define the Plot property.
     /// </summary>
     public string? Plot { get; set; }
+
     /// <summary>
     /// This property is used to define the ImdbId property.
     /// </summary>

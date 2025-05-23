@@ -53,7 +53,7 @@ public interface IMoviesService
     /// <param name="genre"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<MovieResponse>> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default);
+    // Task<IEnumerable<MovieResponse>> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method is used to get a movie by imdb id.

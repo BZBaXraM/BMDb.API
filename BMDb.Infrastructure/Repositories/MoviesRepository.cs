@@ -20,7 +20,7 @@ public class MoviesRepository : IMoviesRepository
             query = filterOn.ToLower() switch
             {
                 "title" => query.Where(m => m.Title.ToLower().Contains(filterQuery.ToLower())),
-                "genre" => query.Where(m => m.Genre.ToLower().Contains(filterQuery.ToLower())),
+                "genre" => query.Where(m => m.Genres.Contains(filterQuery.ToLower())),
                 "director" => query.Where(m => m.Director.ToLower().Contains(filterQuery.ToLower())),
                 "year" => query.Where(m => m.Year.ToString().Contains(filterQuery)),
                 _ => query
@@ -48,7 +48,7 @@ public class MoviesRepository : IMoviesRepository
 
     public async Task<Movie> AddMovieAsync(Movie movie, CancellationToken cancellationToken = default)
     {
-        await _context.Movies.AddAsync(movie, cancellationToken);
+        _context.Movies.Add(movie);
         await _context.SaveChangesAsync(cancellationToken);
 
         return movie;
@@ -69,7 +69,7 @@ public class MoviesRepository : IMoviesRepository
         existingMovie.Trailer = movie.Trailer;
         existingMovie.Year = movie.Year;
         existingMovie.Director = movie.Director;
-        existingMovie.Genre = movie.Genre;
+        existingMovie.Genres = movie.Genres;
         existingMovie.Plot = movie.Plot;
         existingMovie.ImdbId = movie.ImdbId;
 
@@ -104,15 +104,15 @@ public class MoviesRepository : IMoviesRepository
         return movies;
     }
 
-    public async Task<List<Movie>> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default)
-    {
-        var movies = await _context.Movies
-            .AsNoTracking()
-            .Where(m => EF.Functions.Like(m.Genre, $"%{genre}%"))
-            .ToListAsync(cancellationToken);
-
-        return movies;
-    }
+    // public async Task<List<Movie>> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default)
+    // {
+    //     var movies = await _context.Movies
+    //         .AsNoTracking()
+    //         .Where(m => EF.Functions.Like(m.Genre, $"%{genre}%"))
+    //         .ToListAsync(cancellationToken);
+    //
+    //     return movies;
+    // }
 
     public async Task<List<Movie>> GetMovieByDirectorAsync(string director,
         CancellationToken cancellationToken = default)

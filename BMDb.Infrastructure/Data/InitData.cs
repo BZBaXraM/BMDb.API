@@ -11,7 +11,7 @@ public static class InitData
                 Title = "The Shawshank Redemption",
                 Year = "1994",
                 Director = "Frank Darabont",
-                Genre = "Drama",
+                Genres = new List<string> { "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_SX300.jpg",
                 Trailer = "https://bmdb.blob.core.windows.net/test/videoplayback.mp4",
@@ -26,7 +26,7 @@ public static class InitData
                 Title = "The Godfather",
                 Year = "1972",
                 Director = "Francis Ford Coppola",
-                Genre = "Crime, Drama",
+                Genres = new List<string> { "Crime", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                 Plot =
@@ -39,7 +39,7 @@ public static class InitData
                 Title = "The Dark Knight",
                 Year = "2008",
                 Director = "Christopher Nolan",
-                Genre = "Action, Crime, Drama",
+                Genres = new List<string> { "Action", "Crime", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg",
                 Plot =
@@ -52,7 +52,7 @@ public static class InitData
                 Title = "The Dark Knight Rises",
                 Year = "2012",
                 Director = "Christopher Nolan",
-                Genre = "Action, Adventure",
+                Genres = new List<string> { "Action", "Adventure", "Thriller" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_SX300.jpg",
                 Plot =
@@ -65,7 +65,7 @@ public static class InitData
                 Title = "The Godfather: Part II",
                 Year = "1974",
                 Director = "Francis Ford Coppola",
-                Genre = "Crime, Drama",
+                Genres = new List<string> { "Crime", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                 Plot =
@@ -78,7 +78,7 @@ public static class InitData
                 Title = "Pulp Fiction",
                 Year = "1994",
                 Director = "Quentin Tarantino",
-                Genre = "Crime, Drama",
+                Genres = new List<string> { "Crime", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                 Plot =
@@ -91,7 +91,7 @@ public static class InitData
                 Title = "Schindler's List",
                 Year = "1993",
                 Director = "Steven Spielberg",
-                Genre = "Biography, Drama, History",
+                Genres = new List<string> { "Biography", "Drama", "History" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
                 Plot =
@@ -104,7 +104,7 @@ public static class InitData
                 Title = "Fight Club",
                 Year = "1999",
                 Director = "David Fincher",
-                Genre = "Drama",
+                Genres = new List<string> { "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BODQ0OWJiMzktYjNlYi00MzcwLThlZWMtMzRkYTY4ZDgxNzgxXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                 Plot =
@@ -117,7 +117,7 @@ public static class InitData
                 Title = "The Matrix",
                 Year = "1999",
                 Director = "Lana Wachowski, Lilly Wachowski",
-                Genre = "Action, Sci-Fi",
+                Genres = new List<string> { "Action", "Sci-Fi" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
                 Plot =
@@ -130,7 +130,7 @@ public static class InitData
                 Title = "Goodfellas",
                 Year = "1990",
                 Director = "Martin Scorsese",
-                Genre = "Biography, Crime, Drama",
+                Genres = new List<string> { "Biography", "Crime", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BY2NkZjEzMDgtN2RjYy00YzM1LWI4ZmQtMjIwYjFjNmI3ZGEwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                 Plot =
@@ -143,7 +143,7 @@ public static class InitData
                 Title = "Spider Man",
                 Year = "2002",
                 Director = "Sam Raimi",
-                Genre = "Action, Adventure, Sci-Fi",
+                Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg",
                 Plot =
@@ -156,7 +156,7 @@ public static class InitData
                 Title = "Spider Man 2",
                 Year = "2004",
                 Director = "Sam Raimi",
-                Genre = "Action, Adventure, Sci-Fi",
+                Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BMzY2ODk4NmUtOTVmNi00ZTdkLTlmOWYtMmE2OWVhNTU2OTVkXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
                 Plot =
@@ -169,7 +169,7 @@ public static class InitData
                 Title = "Spider Man 3",
                 Year = "2007",
                 Director = "Sam Raimi",
-                Genre = "Action, Adventure, Sci-Fi",
+                Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BYTk3MDljOWQtNGI2My00OTEzLTlhYjQtOTQ4ODM2MzUwY2IwXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg",
                 Plot =
@@ -182,7 +182,7 @@ public static class InitData
                 Title = "Tron",
                 Year = "1982",
                 Director = "Steven Lisberger",
-                Genre = "Action, Adventure, Sci-Fi",
+                Genres = new List<string> { "Action", "Adventure", "Sci-Fi" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BZjgxYzk3NjItNDliMC00YzE5LWEzZDQtZjJjZWUyNjE2MGFkXkEyXkFqcGdeQXVyMTUzMDUzNTI3._V1_SX300.jpg",
                 Plot =
@@ -195,7 +195,7 @@ public static class InitData
                 Title = "Tron: Legacy",
                 Year = "2010",
                 Director = "Joseph Kosinski",
-                Genre = "Action, Adventure, Sci-Fi",
+                Genres = new List<string> { "Action", "Adventure", "Sci-Fi" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BMTk4NTk4MTk1OF5BMl5BanBnXkFtZTcwNTE2MDIwNA@@._V1_SX300.jpg",
                 Plot =
@@ -208,7 +208,7 @@ public static class InitData
                 Title = "The Social Network",
                 Year = "2010",
                 Director = "David Fincher",
-                Genre = "Biography, Drama",
+                Genres = new List<string> { "Biography", "Drama" },
                 Poster =
                     "https://m.media-amazon.com/images/M/MV5BOGUyZDUxZjEtMmIzMC00MzlmLTg4MGItZWJmMzBhZjE0Mjc1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
                 Plot =
