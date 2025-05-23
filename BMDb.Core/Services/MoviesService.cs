@@ -16,10 +16,11 @@ public class MoviesService : IMoviesService
 
     public async Task<List<MovieResponse>> GetMoviesAsync(string? filterOn, string? filterQuery, string? sortBy,
         bool isAscending = true, int pageNumber = 1,
-        int pageSize = 100, CancellationToken cancellationToken = default)
+        int pageSize = 100, string? title = null, string? genre = null, string? director = null, string? year = null,
+        CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending, pageNumber,
-            pageSize, cancellationToken);
+            pageSize, title, genre, director, year, cancellationToken);
         return _mapper.Map<List<MovieResponse>>(movies);
     }
 
@@ -27,34 +28,6 @@ public class MoviesService : IMoviesService
     {
         var movie = await _moviesRepository.GetMovieByIdAsync(id, cancellationToken);
         return movie == null ? null : _mapper.Map<MovieResponse>(movie);
-    }
-
-    public async Task<List<MovieResponse>> GetMovieByTitleAsync(string title,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _moviesRepository.GetMovieByTitleAsync(title, cancellationToken);
-        return _mapper.Map<List<MovieResponse>>(movies);
-    }
-
-    public async Task<IEnumerable<MovieResponse>> GetMovieByYearAsync(string year,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _moviesRepository.GetMovieByYearAsync(year, cancellationToken);
-        return _mapper.Map<List<MovieResponse>>(movies);
-    }
-
-    public async Task<IEnumerable<MovieResponse>> GetMovieByDirectorAsync(string director,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _moviesRepository.GetMovieByDirectorAsync(director, cancellationToken);
-        return _mapper.Map<List<MovieResponse>>(movies);
-    }
-
-    public async Task<IEnumerable<MovieResponse>> GetMovieByGenreAsync(string genre,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _moviesRepository.GetMovieByGenreAsync(genre, cancellationToken);
-        return _mapper.Map<List<MovieResponse>>(movies);
     }
 
     public async Task<IEnumerable<MovieResponse>> GetMovieByImdbIdAsync(string imdbId,

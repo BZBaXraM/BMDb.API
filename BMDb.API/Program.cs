@@ -30,9 +30,6 @@ app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandleMiddleware>();
-
-app.UseStaticFiles();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -21,7 +22,7 @@ namespace BMDb.Infrastructure.Data.Migrations
                     Trailer = table.Column<string>(type: "text", nullable: true),
                     Year = table.Column<string>(type: "text", nullable: false),
                     Director = table.Column<string>(type: "text", nullable: false),
-                    Genre = table.Column<string>(type: "text", nullable: false),
+                    Genres = table.Column<List<string>>(type: "text[]", nullable: false),
                     Plot = table.Column<string>(type: "text", nullable: true),
                     ImdbId = table.Column<string>(type: "text", nullable: false)
                 },

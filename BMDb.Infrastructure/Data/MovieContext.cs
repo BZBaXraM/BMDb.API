@@ -8,7 +8,6 @@ public class MovieContext : DbContext
     {
     }
 
-
     /// <summary>
     /// Movies DbSet
     /// </summary>
