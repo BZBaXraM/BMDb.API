@@ -26,11 +26,14 @@ public class MoviesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetMoviesAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
         [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
-        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, CancellationToken cancellationToken = default)
+        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] string? title = null,
+        [FromQuery] string? genre = null,
+        [FromQuery] string? director = null, [FromQuery] string? year = null,
+        CancellationToken cancellationToken = default)
     {
         var movies = await _service.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber,
-            pageSize, cancellationToken);
-        
+            pageSize, title, genre, director, year, cancellationToken);
+
         return Ok(movies);
     }
 
@@ -45,7 +48,7 @@ public class MoviesController : ControllerBase
     public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
-        
+
         if (movie is null)
         {
             return NotFound();
@@ -53,66 +56,6 @@ public class MoviesController : ControllerBase
 
         return Ok(movie);
     }
-
-    /// <summary>
-    /// This method is used to get a movie by title.
-    /// </summary>
-    /// <param name="title"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("title/{title}")]
-    public async Task<IActionResult> GetMovieByTitleAsync(string title,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _service.GetMovieByTitleAsync(title, cancellationToken);
-
-        return Ok(movies);
-    }
-
-
-    /// <summary>
-    /// This method is used to get a movie by year.
-    /// </summary>
-    /// <param name="year"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("year/{year}")]
-    public async Task<IActionResult> GetMovieByYearAsync(string year, CancellationToken cancellationToken = default)
-    {
-        var movies = await _service.GetMovieByYearAsync(year, cancellationToken);
-
-        return Ok(movies);
-    }
-
-    /// <summary>
-    /// This method is used to get a movie by a director.
-    /// </summary>
-    /// <param name="director"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("director/{director}")]
-    public async Task<IActionResult> GetMovieByDirectorAsync(string director,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _service.GetMovieByDirectorAsync(director, cancellationToken);
-
-        return Ok(movies);
-    }
-
-    /// <summary>
-    /// This method is used to get a movie by genre.
-    /// </summary>
-    /// <param name="genre"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    // [HttpGet("genre/{genre}")]
-    // public async Task<IActionResult> GetMovieByGenreAsync(string genre,
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     var movies = await _service.GetMovieByGenreAsync(genre, cancellationToken);
-    //
-    //     return Ok(movies);
-    // }
 
     /// <summary>
     /// This method is used to get a movie by imdb id.

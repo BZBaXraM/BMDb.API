@@ -11,7 +11,8 @@ public class MoviesRepository : IMoviesRepository
 
     public async Task<List<Movie>> GetMoviesAsync(string? filterOn, string? filterQuery, string? sortBy,
         bool isAscending = true, int pageNumber = 1,
-        int pageSize = 100, CancellationToken cancellationToken = default)
+        int pageSize = 100, string? title = null, string? genre = null, string? director = null, string? year = null,
+        CancellationToken cancellationToken = default)
     {
         var query = _context.Movies.AsQueryable();
 
@@ -22,7 +23,7 @@ public class MoviesRepository : IMoviesRepository
                 "title" => query.Where(m => m.Title.ToLower().Contains(filterQuery.ToLower())),
                 "genre" => query.Where(m => m.Genres.Contains(filterQuery.ToLower())),
                 "director" => query.Where(m => m.Director.ToLower().Contains(filterQuery.ToLower())),
-                "year" => query.Where(m => m.Year.ToString().Contains(filterQuery)),
+                "year" => query.Where(m => m.Year.ToString().Contains(filterQuery.ToLower())),
                 _ => query
             };
         }
@@ -32,6 +33,26 @@ public class MoviesRepository : IMoviesRepository
             query = isAscending
                 ? query.OrderBy(m => EF.Property<object>(m, sortBy))
                 : query.OrderByDescending(m => EF.Property<object>(m, sortBy));
+        }
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            query = query.Where(m => m.Title.ToLower().Contains(title.ToLower()));
+        }
+
+        if (!string.IsNullOrEmpty(genre))
+        {
+            query = query.Where(m => m.Genres.Contains(genre.ToLower()));
+        }
+
+        if (!string.IsNullOrEmpty(director))
+        {
+            query = query.Where(m => m.Director.ToLower().Contains(director.ToLower()));
+        }
+
+        if (!string.IsNullOrEmpty(year))
+        {
+            query = query.Where(m => m.Year.Contains(year.ToLower()));
         }
 
         return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
@@ -99,37 +120,6 @@ public class MoviesRepository : IMoviesRepository
         var movies = await _context.Movies
             .AsNoTracking()
             .Where(m => EF.Functions.Like(m.Title, $"%{title}%"))
-            .ToListAsync(cancellationToken);
-
-        return movies;
-    }
-
-    // public async Task<List<Movie>> GetMovieByGenreAsync(string genre, CancellationToken cancellationToken = default)
-    // {
-    //     var movies = await _context.Movies
-    //         .AsNoTracking()
-    //         .Where(m => EF.Functions.Like(m.Genre, $"%{genre}%"))
-    //         .ToListAsync(cancellationToken);
-    //
-    //     return movies;
-    // }
-
-    public async Task<List<Movie>> GetMovieByDirectorAsync(string director,
-        CancellationToken cancellationToken = default)
-    {
-        var movies = await _context.Movies
-            .AsNoTracking()
-            .Where(m => EF.Functions.Like(m.Director, $"%{director}%"))
-            .ToListAsync(cancellationToken);
-
-        return movies;
-    }
-
-    public async Task<List<Movie>> GetMovieByYearAsync(string year, CancellationToken cancellationToken = default)
-    {
-        var movies = await _context.Movies
-            .AsNoTracking()
-            .Where(m => EF.Functions.Like(m.Year, $"%{year}%"))
             .ToListAsync(cancellationToken);
 
         return movies;
