@@ -9,7 +9,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Shawshank Redemption",
-                Year = "1994",
+                Year = 1994,
                 Director = "Frank Darabont",
                 Genres = new List<string> { "Drama" },
                 Poster =
@@ -24,7 +24,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Godfather",
-                Year = "1972",
+                Year = 1972,
                 Director = "Francis Ford Coppola",
                 Genres = new List<string> { "Crime", "Drama" },
                 Poster =
@@ -37,7 +37,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Dark Knight",
-                Year = "2008",
+                Year = 2008,
                 Director = "Christopher Nolan",
                 Genres = new List<string> { "Action", "Crime", "Drama" },
                 Poster =
@@ -50,7 +50,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Dark Knight Rises",
-                Year = "2012",
+                Year = 2012,
                 Director = "Christopher Nolan",
                 Genres = new List<string> { "Action", "Adventure", "Thriller" },
                 Poster =
@@ -63,7 +63,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Godfather: Part II",
-                Year = "1974",
+                Year = 1974,
                 Director = "Francis Ford Coppola",
                 Genres = new List<string> { "Crime", "Drama" },
                 Poster =
@@ -76,7 +76,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Pulp Fiction",
-                Year = "1994",
+                Year = 1994,
                 Director = "Quentin Tarantino",
                 Genres = new List<string> { "Crime", "Drama" },
                 Poster =
@@ -89,7 +89,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Schindler's List",
-                Year = "1993",
+                Year = 1993,
                 Director = "Steven Spielberg",
                 Genres = new List<string> { "Biography", "Drama", "History" },
                 Poster =
@@ -102,7 +102,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Fight Club",
-                Year = "1999",
+                Year = 1999,
                 Director = "David Fincher",
                 Genres = new List<string> { "Drama" },
                 Poster =
@@ -115,7 +115,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Matrix",
-                Year = "1999",
+                Year = 1999,
                 Director = "Lana Wachowski, Lilly Wachowski",
                 Genres = new List<string> { "Action", "Sci-Fi" },
                 Poster =
@@ -128,7 +128,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Goodfellas",
-                Year = "1990",
+                Year = 1990,
                 Director = "Martin Scorsese",
                 Genres = new List<string> { "Biography", "Crime", "Drama" },
                 Poster =
@@ -141,7 +141,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Spider Man",
-                Year = "2002",
+                Year = 2002,
                 Director = "Sam Raimi",
                 Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
@@ -154,7 +154,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Spider Man 2",
-                Year = "2004",
+                Year = 2004,
                 Director = "Sam Raimi",
                 Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
@@ -167,7 +167,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Spider Man 3",
-                Year = "2007",
+                Year = 2007,
                 Director = "Sam Raimi",
                 Genres = new List<string> { "Action", "Adventure", "Fantasy" },
                 Poster =
@@ -180,7 +180,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Tron",
-                Year = "1982",
+                Year = 1982,
                 Director = "Steven Lisberger",
                 Genres = new List<string> { "Action", "Adventure", "Sci-Fi" },
                 Poster =
@@ -193,7 +193,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "Tron: Legacy",
-                Year = "2010",
+                Year = 2010,
                 Director = "Joseph Kosinski",
                 Genres = new List<string> { "Action", "Adventure", "Sci-Fi" },
                 Poster =
@@ -206,7 +206,7 @@ public static class InitData
             {
                 Id = Guid.NewGuid(),
                 Title = "The Social Network",
-                Year = "2010",
+                Year = 2010,
                 Director = "David Fincher",
                 Genres = new List<string> { "Biography", "Drama" },
                 Poster =

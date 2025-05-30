@@ -28,7 +28,7 @@ public class MovieResponse
     /// <summary>
     /// This property is used to define the Year property.
     /// </summary>
-    public string Year { get; set; } = string.Empty;
+    public int Year { get; set; }
 
     /// <summary>
     /// This property is used to define the Director property.    

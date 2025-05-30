@@ -16,7 +16,7 @@ public class MoviesService : IMoviesService
 
     public async Task<List<MovieResponse>> GetMoviesAsync(string? filterOn, string? filterQuery, string? sortBy,
         bool isAscending = true, int pageNumber = 1,
-        int pageSize = 100, string? title = null, string? genre = null, string? director = null, string? year = null,
+        int pageSize = 100, string? title = null, string? genre = null, string? director = null, int? year = null,
         CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending, pageNumber,

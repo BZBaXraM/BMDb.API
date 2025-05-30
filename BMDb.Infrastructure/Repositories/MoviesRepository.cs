@@ -11,7 +11,7 @@ public class MoviesRepository : IMoviesRepository
 
     public async Task<List<Movie>> GetMoviesAsync(string? filterOn, string? filterQuery, string? sortBy,
         bool isAscending = true, int pageNumber = 1,
-        int pageSize = 100, string? title = null, string? genre = null, string? director = null, string? year = null,
+        int pageSize = 100, string? title = null, string? genre = null, string? director = null, int? year = null,
         CancellationToken cancellationToken = default)
     {
         var query = _context.Movies.AsQueryable();
@@ -42,7 +42,7 @@ public class MoviesRepository : IMoviesRepository
 
         if (!string.IsNullOrEmpty(genre))
         {
-            query = query.Where(m => m.Genres.Contains(genre.ToLower()));
+            query = query.Where(m => m.Genres.Any(g => g.ToLower() == genre.ToLower()));
         }
 
         if (!string.IsNullOrEmpty(director))
@@ -50,9 +50,9 @@ public class MoviesRepository : IMoviesRepository
             query = query.Where(m => m.Director.ToLower().Contains(director.ToLower()));
         }
 
-        if (!string.IsNullOrEmpty(year))
+        if (year.HasValue)
         {
-            query = query.Where(m => m.Year.Contains(year.ToLower()));
+            query = query.Where(m => m.Year == year.Value);
         }
 
         return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
@@ -113,16 +113,6 @@ public class MoviesRepository : IMoviesRepository
         await _context.SaveChangesAsync(cancellationToken);
 
         return movie;
-    }
-
-    public async Task<List<Movie>> GetMovieByTitleAsync(string title, CancellationToken cancellationToken = default)
-    {
-        var movies = await _context.Movies
-            .AsNoTracking()
-            .Where(m => EF.Functions.Like(m.Title, $"%{title}%"))
-            .ToListAsync(cancellationToken);
-
-        return movies;
     }
 
     public async Task<List<Movie>> GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default)

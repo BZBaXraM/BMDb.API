@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpPost("login-with-access-code")]
+    [HttpPost("login")]
     public async Task<ActionResult<LoginResponseDto>> LoginWithAccessCode([FromBody] LoginRequestDto request)
     {
         var user = await _service.LoginUserAsync(request);

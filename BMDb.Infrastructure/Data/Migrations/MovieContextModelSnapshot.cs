@@ -54,9 +54,8 @@ namespace BMDb.Infrastructure.Data.Migrations
                     b.Property<string>("Trailer")
                         .HasColumnType("text");
 
-                    b.Property<string>("Year")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

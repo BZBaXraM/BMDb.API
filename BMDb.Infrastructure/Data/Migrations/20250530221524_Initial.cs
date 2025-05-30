@@ -20,7 +20,7 @@ namespace BMDb.Infrastructure.Data.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Poster = table.Column<string>(type: "text", nullable: true),
                     Trailer = table.Column<string>(type: "text", nullable: true),
-                    Year = table.Column<string>(type: "text", nullable: false),
+                    Year = table.Column<int>(type: "integer", nullable: false),
                     Director = table.Column<string>(type: "text", nullable: false),
                     Genres = table.Column<List<string>>(type: "text[]", nullable: false),
                     Plot = table.Column<string>(type: "text", nullable: true),

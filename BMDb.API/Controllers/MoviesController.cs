@@ -28,7 +28,7 @@ public class MoviesController : ControllerBase
         [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
         [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] string? title = null,
         [FromQuery] string? genre = null,
-        [FromQuery] string? director = null, [FromQuery] string? year = null,
+        [FromQuery] string? director = null, [FromQuery] int? year = null,
         CancellationToken cancellationToken = default)
     {
         var movies = await _service.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber,

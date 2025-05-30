@@ -5,7 +5,7 @@ public interface IMoviesRepository
     Task<List<Movie>> GetMoviesAsync(string? filterOn, string? filterQuery,
         string? sortBy, bool isAscending = true, int pageNumber = 1, int pageSize = 100,
         string? title = null, string? genre = null,
-        string? director = null, string? year = null,
+        string? director = null, int? year = null,
         CancellationToken cancellationToken = default);
 
     Task<Movie?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default);

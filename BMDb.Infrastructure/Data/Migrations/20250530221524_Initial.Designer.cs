@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BMDb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20250523154533_Initial")]
+    [Migration("20250530221524_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -57,9 +57,8 @@ namespace BMDb.Infrastructure.Data.Migrations
                     b.Property<string>("Trailer")
                         .HasColumnType("text");
 
-                    b.Property<string>("Year")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

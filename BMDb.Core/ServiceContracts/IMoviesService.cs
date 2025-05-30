@@ -13,7 +13,7 @@ public interface IMoviesService
         string? sortBy, bool isAscending = true, int pageNumber = 1, int pageSize = 100, string? title = null,
         string? genre = null,
         string? director = null,
-        string? year = null,
+        int? year = null,
         CancellationToken cancellationToken = default);
 
 
