@@ -13,4 +13,5 @@ public interface IMoviesRepository
     Task<Movie?> UpdateMovieAsync(Guid id, Movie movie, CancellationToken cancellationToken = default);
     Task<Movie> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default);
     Task<List<Movie>> GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
+    Task<List<Movie>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default);
 }

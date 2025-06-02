@@ -71,4 +71,18 @@ public class MoviesController : ControllerBase
 
         return Ok(movies);
     }
+
+    /// <summary>
+    /// This method is used to get random movies.
+    /// </summary>
+    /// <param name="limit"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("random")]
+    public async Task<IActionResult> GetRandomMoviesAsync([FromQuery] int limit = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var movies = await _service.GetRandomMoviesAsync(limit, cancellationToken);
+        return Ok(movies);
+    }
 }

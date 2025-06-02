@@ -124,4 +124,14 @@ public class MoviesRepository : IMoviesRepository
 
         return movies;
     }
+
+    public async Task<List<Movie>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default)
+    {
+        var movies = await _context.Movies
+            .OrderBy(m => Guid.NewGuid())
+            .Take(limit)
+            .ToListAsync(cancellationToken);
+
+        return movies;
+    }
 }

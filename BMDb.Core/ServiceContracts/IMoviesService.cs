@@ -33,4 +33,6 @@ public interface IMoviesService
     /// <returns></returns>
     Task<IEnumerable<MovieResponse>>
         GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
+    
+    Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default);
 }

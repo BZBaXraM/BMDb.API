@@ -36,4 +36,10 @@ public class MoviesService : IMoviesService
         var movies = await _moviesRepository.GetMovieByImdbIdAsync(imdbId, cancellationToken);
         return _mapper.Map<List<MovieResponse>>(movies);
     }
+
+    public async Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default)
+    {
+        var movies = await _moviesRepository.GetRandomMoviesAsync(limit, cancellationToken);
+        return _mapper.Map<List<MovieResponse>>(movies);
+    }
 }
