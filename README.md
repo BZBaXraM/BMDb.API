@@ -27,18 +27,19 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 ### Authentication
 
 - `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login-with-access-code` - Login with access code
+- `POST /api/auth/login` - Login with access code
 - `POST /api/auth/refresh-token` - Refresh JWT token
 
 ### Movies
 
-- `GET /api/movies/get-all` - Get all movies
-- `GET /api/movies/get-by-id/{id}` - Get a movie by ID
-- `GET /api/movies/title/{title}` - Get movies by title
-- `GET /api/movies/genre/{genre}` - Get movies by genre
-- `GET /api/movies/director/{director}` - Get movies by director
-- `GET /api/movies/year/{year}` - Get movies by release year
-- `GET /api/movies/imdb/{imdbId}` - Get movies by IMDB ID
+- `GET /api/movies` — Get all movies (with support for filtering, sorting, pagination, and search by title, genre, director, year)
+- `GET /api/movies?title={title}` — Get movies by title
+- `GET /api/movies?genre={genre}` — Get movies by genre
+- `GET /api/movies?director={director}` — Get movies by director
+- `GET /api/movies?year={year}` — Get movies by release year
+- `GET /api/movies/{id}` — Get a movie by ID
+- `GET /api/movies/imdb/{imdb}` — Get a movie by IMDB ID
+- `GET /api/movies/random?limit={limit}` — Get random movies (with optional limit)
 
 ### Admin
 
