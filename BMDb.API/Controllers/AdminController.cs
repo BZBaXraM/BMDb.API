@@ -22,15 +22,15 @@ public class AdminController : ControllerBase
     /// <summary>
     /// This method is used to add a movie.
     /// </summary>
-    /// <param name="requestDto"></param>
+    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("add-movie")]
     [ValidateModel]
-    public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequestDto requestDto,
+    public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        var movie = await _service.AddMovieAsync(requestDto, cancellationToken);
+        var movie = await _service.AddMovieAsync(request, cancellationToken);
 
         return CreatedAtAction(nameof(GetMovieById), new { id = movie.Id }, movie);
     }
@@ -44,7 +44,7 @@ public class AdminController : ControllerBase
     /// <returns></returns>
     [HttpPut("update-movie/{id:guid}")]
     [ValidateModel]
-    public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, [FromBody] UpdateMovieRequestDto request,
+    public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, [FromBody] UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
         var movie = await _service.UpdateMovieAsync(id, request, cancellationToken);

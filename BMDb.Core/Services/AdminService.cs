@@ -17,7 +17,7 @@ public class AdminService : IAdminService
         return movie == null ? null : _mapper.Map<MovieResponse>(movie);
     }
 
-    public async Task<MovieResponse> AddMovieAsync(AddMovieRequestDto request,
+    public async Task<MovieResponse> AddMovieAsync(AddMovieRequest request,
         CancellationToken cancellationToken = default)
     {
         var movie = _mapper.Map<Movie>(request);
@@ -27,7 +27,7 @@ public class AdminService : IAdminService
         return _mapper.Map<MovieResponse>(addedMovie);
     }
 
-    public async Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequestDto request,
+    public async Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
         var movie = await _moviesRepository.GetMovieByIdAsync(id, cancellationToken);

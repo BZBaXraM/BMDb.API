@@ -16,7 +16,7 @@ public interface IAdminService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse> AddMovieAsync(AddMovieRequestDto request, CancellationToken cancellationToken = default);
+    Task<MovieResponse> AddMovieAsync(AddMovieRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method is used to update a movie.
@@ -25,7 +25,7 @@ public interface IAdminService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequestDto request,
+    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>

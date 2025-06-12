@@ -11,6 +11,7 @@ public static class DependencyInjection
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
+        
         services.AddDbContext<AuthContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("IdentityConnection"));

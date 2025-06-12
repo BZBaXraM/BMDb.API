@@ -2,7 +2,8 @@ namespace BMDb.Core.ServiceContracts;
 
 public interface IAuthService
 {
-    Task<RegisterResponse> RegisterUserAsync(RegisterRequestDto registerRequestDto);
-    Task<LoginResponseDto> LoginUserAsync(LoginRequestDto loginRequestDto);
+    Task<AuthResponse?> RegisterUserAsync(RegisterRequest registerRequest);
+    Task<AuthResponse?> LoginUserAsync(LoginRequest loginRequest);
     Task<TokenDto> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
+    Task<TokenDto> LogoutUserAsync(TokenDto dto);
 }

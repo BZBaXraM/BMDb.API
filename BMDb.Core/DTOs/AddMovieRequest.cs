@@ -1,9 +1,9 @@
 namespace BMDb.Core.DTOs;
 
 /// <summary>
-/// This class is used to define the UpdateMovieRequestDto class.
+/// This class is used to define the AddMovieRequestDto class.
 /// </summary>
-public class UpdateMovieRequestDto
+public class AddMovieRequest
 {
     /// <summary>
     /// This property is used to define the Title property.
@@ -25,7 +25,7 @@ public class UpdateMovieRequestDto
     /// This property is used to define the Year property.
     /// </summary>
 
-    public int Year { get; set; }
+    public int Year { get; set; } 
 
     /// <summary>
     /// This property is used to define the Director property.

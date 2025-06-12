@@ -24,9 +24,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("register")]
-    public async Task<ActionResult<LoginResponseDto>> Register([FromBody] RegisterRequestDto request)
+    public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
     {
-        await _service.RegisterUserAsync(request);
+        var user = await _service.RegisterUserAsync(request);
+
+        if (user is null) return NotFound();
 
         return Ok("Check your email for the access code.");
     }
@@ -37,9 +39,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<LoginResponseDto>> LoginWithAccessCode([FromBody] LoginRequestDto request)
+    public async Task<ActionResult<AuthResponse>> LoginWithAccessCode([FromBody] LoginRequest request)
     {
         var user = await _service.LoginUserAsync(request);
+
+        if (user is null) return Unauthorized();
 
         return Ok(user);
     }
@@ -55,5 +59,15 @@ public class AuthController : ControllerBase
         var user = await _service.GetNewRefreshTokenAsync(request);
 
         return Ok(user);
+    }
+
+    /// <summary>
+    /// Logout a user by invalidating their tokens.
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] TokenDto dto)
+    {
+        // TODO: Implement logout logic
     }
 }

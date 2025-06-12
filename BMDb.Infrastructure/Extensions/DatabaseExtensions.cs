@@ -1,8 +1,5 @@
 namespace BMDb.Infrastructure.Extensions;
 
-/// <summary>
-/// 
-/// </summary>
 public static class DatabaseExtensions
 {
     public static async Task InitialiseDatabaseAsync(this WebApplication app)

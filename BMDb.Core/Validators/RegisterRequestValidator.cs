@@ -3,7 +3,7 @@ namespace BMDb.Core.Validators;
 /// <summary>
 ///   This class is used to validate the RegisterRequestDto.
 /// </summary>
-public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
+public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     /// <summary>
     ///  This constructor is used to validate the RegisterRequestDto.

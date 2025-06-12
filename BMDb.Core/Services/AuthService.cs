@@ -18,31 +18,30 @@ public class AuthService : IAuthService
         _loginRequestValidator = loginRequestValidator;
     }
 
-    public async Task<RegisterResponse> RegisterUserAsync(RegisterRequestDto registerRequestDto)
+    public async Task<AuthResponse?> RegisterUserAsync(RegisterRequest registerRequest)
     {
         var accessCode = Guid.NewGuid().ToString()[..6];
 
-        // Validate the register request
-        var validationResult = await _registerRequestValidator.ValidateAsync(registerRequestDto);
+        var validationResult = await _registerRequestValidator.ValidateAsync(registerRequest);
+
         if (!validationResult.IsValid)
         {
             throw new Exception("Invalid registration request");
         }
 
-        // Create a new user
         var user = new User
         {
-            Email = registerRequestDto.Email,
+            Email = registerRequest.Email,
             AccessCode = accessCode,
             RefreshToken = _jwtService.GenerateRefreshToken()
         };
 
         await _userRepository.AddUserAsync(user);
 
-        await _emailService.SendAccessCodeAsync(registerRequestDto.Email, accessCode);
+        await _emailService.SendAccessCodeAsync(registerRequest.Email, accessCode);
 
 
-        return new RegisterResponse
+        return new AuthResponse
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
             RefreshToken = user.RefreshToken,
@@ -50,22 +49,23 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<LoginResponseDto> LoginUserAsync(LoginRequestDto loginRequestDto)
+    public async Task<AuthResponse?> LoginUserAsync(LoginRequest loginRequest)
     {
-        var user = await _userRepository.GetAccessCodeAsync(loginRequestDto.AccessCode);
-        if (user == null)
+        var user = await _userRepository.GetAccessCodeAsync(loginRequest.AccessCode);
+
+        if (user is null)
         {
             throw new Exception("Invalid access code");
         }
 
-        // Validate the login request
-        var validationResult = await _loginRequestValidator.ValidateAsync(loginRequestDto);
+        var validationResult = await _loginRequestValidator.ValidateAsync(loginRequest);
+
         if (!validationResult.IsValid)
         {
             throw new Exception("Invalid login request");
         }
 
-        return new LoginResponseDto
+        return new AuthResponse
         {
             AccessCode = user.AccessCode,
             AccessToken = _jwtService.GenerateSecurityToken(user),
@@ -75,8 +75,9 @@ public class AuthService : IAuthService
 
     public async Task<TokenDto> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
     {
-        var user = await _userRepository.GetUserByRefreshTokenAsync(refreshTokenRequest.RefreshToken);
-        if (user == null)
+        var user = await _userRepository.GetUserByRefreshTokenAsync(refreshTokenRequest.RefreshToken!);
+
+        if (user is null)
         {
             throw new Exception("Invalid refresh token");
         }
@@ -89,5 +90,10 @@ public class AuthService : IAuthService
             RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
+    }
+
+    public async Task<TokenDto> LogoutUserAsync(TokenDto dto)
+    {
+        throw new NotImplementedException();
     }
 }

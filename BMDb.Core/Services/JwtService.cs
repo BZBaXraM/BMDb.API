@@ -6,9 +6,15 @@ namespace BMDb.Core.Services;
 /// <summary>
 /// The JWT service
 /// </summary>
-/// <param name="config"></param>
-public class JwtService(JwtConfig config) : IJwtService
+public class JwtService : IJwtService
 {
+    private readonly JwtConfig _jwtConfig;
+
+    public JwtService(JwtConfig jwtConfig)
+    {
+        _jwtConfig = jwtConfig;
+    }
+
     /// <summary>
     /// The JWT service configuration
     /// </summary>
@@ -17,7 +23,7 @@ public class JwtService(JwtConfig config) : IJwtService
     public string GenerateSecurityToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -26,7 +32,7 @@ public class JwtService(JwtConfig config) : IJwtService
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("Role", user.Role)
             ]),
-            Expires = DateTime.UtcNow.AddHours(config.Expiration),
+            Expires = DateTime.UtcNow.AddHours(_jwtConfig.Expiration),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
         };
@@ -43,16 +49,15 @@ public class JwtService(JwtConfig config) : IJwtService
     public string GenerateEmailConfirmationToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
+            Subject = new ClaimsIdentity([
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email)
-            }),
-            Expires = DateTime.UtcNow.AddHours(config.Expiration),
+            ]),
+            Expires = DateTime.UtcNow.AddHours(_jwtConfig.Expiration),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
         };
@@ -65,7 +70,7 @@ public class JwtService(JwtConfig config) : IJwtService
     public bool ValidateEmailConfirmationToken(User user, string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var validationParameters = new TokenValidationParameters
         {
@@ -93,16 +98,15 @@ public class JwtService(JwtConfig config) : IJwtService
     public string GenerateForgetPasswordToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
+            Subject = new ClaimsIdentity([
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email)
-            }),
-            Expires = DateTime.UtcNow.AddHours(config.Expiration),
+            ]),
+            Expires = DateTime.UtcNow.AddHours(_jwtConfig.Expiration),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
         };
@@ -115,7 +119,7 @@ public class JwtService(JwtConfig config) : IJwtService
     public bool ValidateForgetPasswordToken(User user, string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var validationParameters = new TokenValidationParameters
         {
@@ -142,7 +146,7 @@ public class JwtService(JwtConfig config) : IJwtService
     public ClaimsPrincipal GetPrincipalFromToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var validationParameters = new TokenValidationParameters
         {
@@ -170,16 +174,15 @@ public class JwtService(JwtConfig config) : IJwtService
     public string GenerateRefreshTokenForEmail(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(config.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
+            Subject = new ClaimsIdentity([
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email)
-            }),
-            Expires = DateTime.UtcNow.AddHours(config.Expiration),
+            ]),
+            Expires = DateTime.UtcNow.AddHours(_jwtConfig.Expiration),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
         };

@@ -7,7 +7,7 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<MovieResponse, Movie>().ReverseMap();
-        CreateMap<AddMovieRequestDto, Movie>().ReverseMap();
-        CreateMap<UpdateMovieRequestDto, Movie>().ReverseMap();
+        CreateMap<AddMovieRequest, Movie>().ReverseMap();
+        CreateMap<UpdateMovieRequest, Movie>().ReverseMap();
     }
 }
