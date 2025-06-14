@@ -28,9 +28,14 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken))!;
     }
 
-    public async Task<bool> UpdateUserAsync(User user)
+    public async Task<User> GetUserDataAsync(string accessToken, string? userName)
     {
-        _authContext.Users.Update(user);
-        return await _authContext.SaveChangesAsync() > 0;
+        return (await _authContext.Users
+            .FirstOrDefaultAsync(u => u.AccessCode == accessToken || u.AccessCode == userName))!;
+    }
+
+    public async Task<int> SaveUserAsync()
+    {
+        return await _authContext.SaveChangesAsync();
     }
 }

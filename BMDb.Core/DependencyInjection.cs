@@ -45,7 +45,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
         services.AddHttpContextAccessor();
-        
+
         services.AddSingleton<RegisterRequestValidator>();
         services.AddSingleton<LoginRequestValidator>();
 

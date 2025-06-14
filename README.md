@@ -29,10 +29,12 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - `POST /api/auth/register` - Register a new user
 - `POST /api/auth/login` - Login with access code
 - `POST /api/auth/refresh-token` - Refresh JWT token
+- `POST /api/auth/logout` - Logout the current user
 
 ### Movies
 
-- `GET /api/movies` — Get all movies (with support for filtering, sorting, pagination, and search by title, genre, director, year)
+- `GET /api/movies` — Get all movies (with support for filtering, sorting, pagination, and search by title, genre,
+  director, year)
 - `GET /api/movies?title={title}` — Get movies by title
 - `GET /api/movies?genre={genre}` — Get movies by genre
 - `GET /api/movies?director={director}` — Get movies by director
@@ -47,10 +49,6 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - `PUT /api/admin/update-movie/{id}` - Update a movie
 - `DELETE /api/admin/delete-movie/{id}` - Delete a movie
 - `GET /api/movies/get-by-id/{id}` - Get a movie by ID
-
-### Account
-
-- `POST /api/account/logout` - Logout the current user
 
 ## Architecture
 

@@ -61,4 +61,17 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
+
+    /// <summary>
+    /// Logs out the user by invalidating their access token and clearing their refresh token.
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> LogoutAsync([FromBody] TokenDto dto)
+    {
+        await _service.LogoutAsync(dto.AccessToken, User.Identity?.Name);
+        return Ok("Logged out successfully");
+    }
 }

@@ -5,17 +5,19 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
     private readonly IEmailService _emailService;
+    private readonly IBlackListService _blackListService;
     private readonly RegisterRequestValidator _registerRequestValidator;
     private readonly LoginRequestValidator _loginRequestValidator;
 
     public AuthService(IUserRepository userRepository, IJwtService jwtService, IEmailService emailService,
-        RegisterRequestValidator registerRequestValidator, LoginRequestValidator loginRequestValidator)
+        RegisterRequestValidator registerRequestValidator, LoginRequestValidator loginRequestValidator, IBlackListService blackListService)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
         _emailService = emailService;
         _registerRequestValidator = registerRequestValidator;
         _loginRequestValidator = loginRequestValidator;
+        _blackListService = blackListService;
     }
 
     public async Task<AuthResponse?> RegisterUserAsync(RegisterRequest registerRequest)
@@ -90,5 +92,18 @@ public class AuthService : IAuthService
             RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
+    }
+    
+    public async Task LogoutAsync(string accessToken, string? userName)
+    {
+        _blackListService.AddTokenToBlackList(accessToken);
+        var user = await _userRepository.GetUserDataAsync(accessToken, userName);
+
+        if (user != null)
+        {
+            user.RefreshToken = null;
+            user.RefreshTokenExpireTime = DateTime.UtcNow;
+            await _userRepository.SaveUserAsync();
+        }
     }
 }
