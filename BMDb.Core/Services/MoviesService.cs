@@ -14,13 +14,14 @@ public class MoviesService : IMoviesService
         _mapper = mapper;
     }
 
-    public async Task<List<MovieResponse>> GetMoviesAsync(string? filterOn, string? filterQuery, string? sortBy,
-        bool isAscending = true, int pageNumber = 1,
-        int pageSize = 100, string? title = null, string? genre = null, string? director = null, int? year = null,
+    public async Task<List<MovieResponse>> GetMoviesAsync(MoviesQueryDto dto,
         CancellationToken cancellationToken = default)
     {
-        var movies = await _moviesRepository.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending, pageNumber,
-            pageSize, title, genre, director, year, cancellationToken);
+        var movies = await _moviesRepository.GetMoviesAsync(
+            dto.FilterOn, dto.FilterQuery, dto.SortBy, dto.IsAscending ?? true,
+            dto.PageNumber, dto.PageSize, dto.Title, dto.Genre, dto.Director, dto.Year,
+            cancellationToken);
+
         return _mapper.Map<List<MovieResponse>>(movies);
     }
 
@@ -37,7 +38,8 @@ public class MoviesService : IMoviesService
         return _mapper.Map<List<MovieResponse>>(movies);
     }
 
-    public async Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10,
+        CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetRandomMoviesAsync(limit, cancellationToken);
         return _mapper.Map<List<MovieResponse>>(movies);

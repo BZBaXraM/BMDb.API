@@ -24,15 +24,10 @@ public class MoviesController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> GetMoviesAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-        [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
-        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] string? title = null,
-        [FromQuery] string? genre = null,
-        [FromQuery] string? director = null, [FromQuery] int? year = null,
+    public async Task<ActionResult<MovieResponse>> GetMoviesAsync([FromQuery] MoviesQueryDto dto,
         CancellationToken cancellationToken = default)
     {
-        var movies = await _service.GetMoviesAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber,
-            pageSize, title, genre, director, year, cancellationToken);
+        var movies = await _service.GetMoviesAsync(dto, cancellationToken);
 
         return Ok(movies);
     }

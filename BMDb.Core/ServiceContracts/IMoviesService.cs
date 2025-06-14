@@ -9,11 +9,7 @@ public interface IMoviesService
     /// This method is used to get all movies.
     /// </summary>
     /// <returns> </returns>
-    Task<List<MovieResponse>> GetMoviesAsync(string? filterOn, string? filterQuery,
-        string? sortBy, bool isAscending = true, int pageNumber = 1, int pageSize = 100, string? title = null,
-        string? genre = null,
-        string? director = null,
-        int? year = null,
+    Task<List<MovieResponse>> GetMoviesAsync(MoviesQueryDto dto,
         CancellationToken cancellationToken = default);
 
 
@@ -33,6 +29,7 @@ public interface IMoviesService
     /// <returns></returns>
     Task<IEnumerable<MovieResponse>>
         GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default);
-    
-    Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<MovieResponse>>
+        GetRandomMoviesAsync(int limit = 10, CancellationToken cancellationToken = default);
 }
