@@ -6,8 +6,6 @@ builder.Services
 
 builder.Services.AddServices();
 
-builder.Services.AddScoped<ExceptionHandleMiddleware>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -27,9 +25,12 @@ app.UseHsts();
 
 app.UseRouting();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ExceptionHandleMiddleware>();
+app.UseMiddleware<BlackListMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -28,10 +28,9 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken))!;
     }
 
-    public async Task<User> UpdateUserAsync(User user)
+    public async Task<bool> UpdateUserAsync(User user)
     {
         _authContext.Users.Update(user);
-        await _authContext.SaveChangesAsync();
-        return user;
+        return await _authContext.SaveChangesAsync() > 0;
     }
 }

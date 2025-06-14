@@ -91,9 +91,4 @@ public class AuthService : IAuthService
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
     }
-
-    public async Task<TokenDto> LogoutUserAsync(TokenDto dto)
-    {
-        throw new NotImplementedException();
-    }
 }

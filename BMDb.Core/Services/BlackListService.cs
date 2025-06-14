@@ -1,16 +1,21 @@
+using System.Collections.Concurrent;
+
 namespace BMDb.Core.Services;
 
 public class BlackListService : IBlackListService
 {
-    private HashSet<string> BlackList { get; set; } = [];
+    private ConcurrentBag<string> BlackList { get; set; } = [];
 
-    public void AddToBlackList(string token)
+    public bool IsTokenBlackListed(string token)
     {
-        BlackList.Add(token);
+        return !string.IsNullOrWhiteSpace(token) && BlackList.Contains(token);
     }
 
-    public bool IsBlackListed(string token)
+    public void AddTokenToBlackList(string token)
     {
-        return BlackList.Contains(token);
+        if (!string.IsNullOrWhiteSpace(token) && !BlackList.Contains(token))
+        {
+            BlackList.Add(token);
+        }
     }
 }

@@ -3,6 +3,7 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// Controller for handling authentication requests.
 /// </summary>
+// [ServiceFilter(typeof(LogUserActivity))]
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
@@ -59,15 +60,5 @@ public class AuthController : ControllerBase
         var user = await _service.GetNewRefreshTokenAsync(request);
 
         return Ok(user);
-    }
-
-    /// <summary>
-    /// Logout a user by invalidating their tokens.
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] TokenDto dto)
-    {
-        // TODO: Implement logout logic
     }
 }

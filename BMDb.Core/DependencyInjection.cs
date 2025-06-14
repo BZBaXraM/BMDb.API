@@ -9,6 +9,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IMoviesService, MoviesService>();
+        services.AddSingleton<IBlackListService, BlackListService>();
 
         services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
 
@@ -44,8 +45,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
         services.AddHttpContextAccessor();
-
-
+        
         services.AddSingleton<RegisterRequestValidator>();
         services.AddSingleton<LoginRequestValidator>();
 

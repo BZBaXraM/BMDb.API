@@ -27,7 +27,9 @@ public static class Di
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddCors();
-        
+
+        services.AddSingleton<BlackListMiddleware>();
+
         services.AddSwaggerGen(setup =>
         {
             setup.SwaggerDoc("v1", new OpenApiInfo

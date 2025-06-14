@@ -48,6 +48,10 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - `DELETE /api/admin/delete-movie/{id}` - Delete a movie
 - `GET /api/movies/get-by-id/{id}` - Get a movie by ID
 
+### Account
+
+- `POST /api/account/logout` - Logout the current user
+
 ## Architecture
 
 The project follows a clean architecture pattern with the following layers:

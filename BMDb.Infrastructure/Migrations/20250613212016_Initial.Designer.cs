@@ -12,9 +12,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BMDb.Infrastructure.Migrations
 {
-    [DbContext(typeof(AuthContext))]
-    [Migration("20250612180141_AuthInitial")]
-    partial class AuthInitial
+    [DbContext(typeof(MovieContext))]
+    [Migration("20250613212016_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,58 +57,12 @@ namespace BMDb.Infrastructure.Migrations
                     b.Property<string>("Trailer")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Movie");
-                });
-
-            modelBuilder.Entity("BMDb.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AccessCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("RefreshTokenExpireTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BMDb.Domain.Entities.Movie", b =>
-                {
-                    b.HasOne("BMDb.Domain.Entities.User", null)
-                        .WithMany("Movies")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("BMDb.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Movies");
+                    b.ToTable("Movies");
                 });
 #pragma warning restore 612, 618
         }
