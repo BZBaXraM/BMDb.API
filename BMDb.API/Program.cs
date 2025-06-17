@@ -36,4 +36,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 await app.RunAsync();

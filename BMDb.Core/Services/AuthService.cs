@@ -10,7 +10,8 @@ public class AuthService : IAuthService
     private readonly LoginRequestValidator _loginRequestValidator;
 
     public AuthService(IUserRepository userRepository, IJwtService jwtService, IEmailService emailService,
-        RegisterRequestValidator registerRequestValidator, LoginRequestValidator loginRequestValidator, IBlackListService blackListService)
+        RegisterRequestValidator registerRequestValidator, LoginRequestValidator loginRequestValidator,
+        IBlackListService blackListService)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
@@ -93,7 +94,7 @@ public class AuthService : IAuthService
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
     }
-    
+
     public async Task LogoutAsync(string accessToken, string? userName)
     {
         _blackListService.AddTokenToBlackList(accessToken);

@@ -22,7 +22,7 @@ public class EmailService : IEmailService
         message.Subject = "Access Code";
         message.Body = new TextPart("html")
         {
-            Text = $"<h1>Access Code</h1><p>Your access code is: <strong>{code}</strong></p>"
+            Text = $"<p>Your access code is: <strong>{code}</strong></p>"
         };
 
         using var client = new SmtpClient();

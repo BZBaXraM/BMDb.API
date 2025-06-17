@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BMDb.Infrastructure.Migrations
+namespace BMDb.Infrastructure.Migrations.Auth
 {
     /// <inheritdoc />
-    public partial class InitialAuth : Migration
+    public partial class AuthInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
