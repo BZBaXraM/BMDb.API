@@ -1,16 +1,16 @@
-﻿@page "/"
+@page "/ForgetAccessCode"
 @using BMDb.AccessCode.Models
 @using BMDb.AccessCode.Services
 @inject IAuthService AuthService
 
 <div class="access-code-container">
     <h1>Get Access Code</h1>
-    <EditForm Model="_registerRequest" OnValidSubmit="RequestAccessCode">
+    <EditForm Model="_accessCodeRequest" OnValidSubmit="ForgetAccessCodeRequest">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         <div class="form-group">
             <label for="email">Email:</label>
-            <InputText id="email" class="form-control" @bind-Value="_registerRequest.Email"/>
+            <InputText id="email" class="form-control" @bind-Value="_accessCodeRequest.Email"/>
         </div>
         <button type="submit" class="btn btn-primary">Get Access Code</button>
     </EditForm>
@@ -26,19 +26,19 @@
 
 
 @code {
-    private RegisterRequestModel _registerRequest = new();
+    private ForgetAccessCodeRequestModel _accessCodeRequest = new();
     private string? _errorMessage;
     private string? _successMessage;
 
-    private async Task RequestAccessCode()
+    private async Task ForgetAccessCodeRequest()
     {
         _errorMessage = null;
         _successMessage = null;
         try
         {
-            await AuthService.RegisterUserAsync(_registerRequest);
-            _successMessage = "Code successfully sent to your email.";
-            _registerRequest = new RegisterRequestModel();
+            await AuthService.ForgetAccessCodeAsync(_accessCodeRequest);
+            _successMessage = "New access code has been sent to your email.";
+            _accessCodeRequest = new ForgetAccessCodeRequestModel();
         }
         catch (Exception ex)
         {

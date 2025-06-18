@@ -63,6 +63,18 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
+    /// Forgets the access code for a user, allowing them to reset it.  
+    /// </summary>
+    /// <param name="forgetAccessCodeRequestDto"></param>
+    /// <returns></returns>
+    [HttpPost("forget-access-code")]
+    public async Task<IActionResult> ForgetAccessCode([FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    {
+        await _service.ForgetAccessCodeAsync(forgetAccessCodeRequestDto);
+        return Ok("Access code forgotten successfully");
+    }
+
+    /// <summary>
     /// Logs out the user by invalidating their access token and clearing their refresh token.
     /// </summary>
     /// <param name="dto"></param>

@@ -24,6 +24,12 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.AccessCode == accessCode))!;
     }
 
+    public async Task<User> GetUserByEmailAsync(string email)
+    {
+        return (await _authContext.Users
+            .FirstOrDefaultAsync(u => u.Email == email))!;
+    }
+
     public async Task<User> GetUserByRefreshTokenAsync(string refreshToken)
     {
         return (await _authContext.Users

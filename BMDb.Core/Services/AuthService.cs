@@ -95,6 +95,22 @@ public class AuthService : IAuthService
         };
     }
 
+    public async Task ForgetAccessCodeAsync(ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(forgetAccessCodeRequestDto.Email);
+
+        if (user is null)
+        {
+            throw new Exception("User not found");
+        }
+
+        var accessCode = Guid.NewGuid().ToString()[..6];
+        user.AccessCode = accessCode;
+
+        await _userRepository.SaveUserAsync();
+        await _emailService.SendAccessCodeAsync(user.Email, accessCode);
+    }
+
     public async Task LogoutAsync(string accessToken, string? userName)
     {
         _blackListService.AddTokenToBlackList(accessToken);
