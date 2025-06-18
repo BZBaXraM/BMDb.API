@@ -1,0 +1,80 @@
+﻿@page "/"
+@using BMDb.AccessCode.Models
+@using BMDb.AccessCode.Services
+@inject IAuthService AuthService
+
+<div class="access-code-container">
+    <h1>Get Access Code</h1>
+    <EditForm Model="_registerRequest" OnValidSubmit="RequestAccessCode">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <InputText id="email" class="form-control" @bind-Value="_registerRequest.Email"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Get Access Code</button>
+    </EditForm>
+    @if (_successMessage != null)
+    {
+        <div class="alert alert-success mt-3">@_successMessage</div>
+    }
+    @if (_errorMessage != null)
+    {
+        <div class="alert alert-danger mt-3">@_errorMessage</div>
+    }
+</div>
+
+
+@code {
+    private RegisterRequestModel _registerRequest = new();
+    private string? _errorMessage;
+    private string? _successMessage;
+
+    private async Task RequestAccessCode()
+    {
+        _errorMessage = null;
+        _successMessage = null;
+        try
+        {
+            await AuthService.RegisterUserAsync(_registerRequest);
+            _successMessage = "Code successfully sent to your email.";
+            _registerRequest = new RegisterRequestModel();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Ошибка: {ex.Message}";
+        }
+
+        StateHasChanged();
+    }
+
+}
+
+<style>
+
+    .access-code-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .alert {
+        margin-top: 15px;
+    }
+
+</style>
