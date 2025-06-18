@@ -29,6 +29,7 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - `POST /api/auth/register` - Register a new user
 - `POST /api/auth/login` - Login with access code
 - `POST /api/auth/refresh-token` - Refresh JWT token
+- `POST /api/auth/forget-access-code` - Request a new access code
 - `POST /api/auth/logout` - Logout the current user
 
 ### Movies
@@ -58,3 +59,8 @@ The project follows a clean architecture pattern with the following layers:
 - **Core Layer**: Contains the business logic and application services.
 - **Infrastructure Layer**: Contains the data access layer, including Entity Framework Core and repository pattern.
 - **Domain Layer**: Contains the domain entities.
+
+## Client
+
+The API has two clients: a Blazor WebAssembly application for user registration and access code recovery, and an Angular
+application for user login and movie browsing.
