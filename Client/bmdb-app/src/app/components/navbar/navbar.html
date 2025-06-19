@@ -1,0 +1,23 @@
+<nav class="bg-white dark:bg-gray-800 p-4 shadow-md">
+	<div class="container mx-auto flex items-center">
+		<a [routerLink]="['/movies']">
+			<h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+				BMDb
+			</h1>
+		</a>
+		<div class="text-xl pl-20 flex space-x-8">
+			<a
+				[routerLink]="['/movies']"
+				class="text-gray-800 dark:text-white hover:text-gray-400"
+			>
+				Random
+			</a>
+			<a
+				[routerLink]="['/search']"
+				class="text-gray-800 dark:text-white hover:text-gray-400"
+			>
+				Search
+			</a>
+		</div>
+	</div>
+</nav>
