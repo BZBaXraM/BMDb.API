@@ -36,10 +36,10 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken))!;
     }
 
-    public async Task<User> GetUserDataAsync(string accessToken, string? userName)
+    public async Task<User?> GetUserDataAsync(string accessToken, string? userName)
     {
-        return (await _authContext.Users
-            .FirstOrDefaultAsync(u => u.AccessCode == accessToken || u.AccessCode == userName))!;
+        return await _authContext.Users
+            .FirstOrDefaultAsync(u => u.AccessCode == accessToken || u.AccessCode == userName);
     }
 
     public async Task<int> SaveUserAsync()

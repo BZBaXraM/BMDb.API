@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
+    public async Task<ActionResult<AuthResponse>> RegisterAsync([FromBody] RegisterRequest request)
     {
         var user = await _service.RegisterUserAsync(request);
 
@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> LoginWithAccessCode([FromBody] LoginRequest request)
+    public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginRequest request)
     {
         var user = await _service.LoginUserAsync(request);
 
@@ -55,11 +55,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<TokenDto>> RefreshToken([FromBody] RefreshTokenRequest request)
+    public async Task<ActionResult<TokenDto>> GetRefreshTokenAsync([FromBody] RefreshTokenRequest request)
     {
-        var user = await _service.GetNewRefreshTokenAsync(request);
+        var token = await _service.GetNewRefreshTokenAsync(request);
 
-        return Ok(user);
+        return Ok(token);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class AuthController : ControllerBase
     /// <param name="forgetAccessCodeRequestDto"></param>
     /// <returns></returns>
     [HttpPost("forget-access-code")]
-    public async Task<IActionResult> ForgetAccessCode([FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    public async Task<IActionResult> ForgetAccessCodeAsync([FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
     {
         await _service.ForgetAccessCodeAsync(forgetAccessCodeRequestDto);
         return Ok("Access code forgotten successfully");

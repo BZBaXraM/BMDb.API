@@ -23,7 +23,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse?> RegisterUserAsync(RegisterRequest registerRequest)
     {
-        var accessCode = Guid.NewGuid().ToString()[..6];
+        var accessCode = GenerateAccessCode();
 
         var validationResult = await _registerRequestValidator.ValidateAsync(registerRequest);
 
@@ -104,12 +104,13 @@ public class AuthService : IAuthService
             throw new Exception("User not found");
         }
 
-        var accessCode = Guid.NewGuid().ToString()[..6];
+        var accessCode = GenerateAccessCode();
         user.AccessCode = accessCode;
 
         await _userRepository.SaveUserAsync();
         await _emailService.SendAccessCodeAsync(user.Email, accessCode);
     }
+
 
     public async Task LogoutAsync(string accessToken, string? userName)
     {
@@ -122,5 +123,10 @@ public class AuthService : IAuthService
             user.RefreshTokenExpireTime = DateTime.UtcNow;
             await _userRepository.SaveUserAsync();
         }
+    }
+
+    private static string GenerateAccessCode()
+    {
+        return Guid.NewGuid().ToString()[..6];
     }
 }

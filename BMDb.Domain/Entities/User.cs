@@ -8,5 +8,4 @@ public class User
     public DateTime RefreshTokenExpireTime { get; set; }
     public string Role { get; set; } = "User";
     public string? RefreshToken { get; set; }
-    public ICollection<Movie> Movies { get; set; } = new List<Movie>();
 }

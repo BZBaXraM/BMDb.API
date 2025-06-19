@@ -28,7 +28,6 @@ public class MoviesController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var movies = await _service.GetMoviesAsync(dto, cancellationToken);
-
         return Ok(movies);
     }
 
@@ -40,7 +39,7 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetMovieByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
 
@@ -63,7 +62,6 @@ public class MoviesController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var movies = await _service.GetMovieByImdbIdAsync(imdb, cancellationToken);
-
         return Ok(movies);
     }
 

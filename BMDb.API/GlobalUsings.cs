@@ -1,7 +1,6 @@
 // Global using directives
 
 global using System.Net;
-global using System.Security.Claims;
 global using BMDb.API;
 global using BMDb.API.Filters;
 global using BMDb.API.Middlewares;

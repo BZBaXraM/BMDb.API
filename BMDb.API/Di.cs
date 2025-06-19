@@ -16,11 +16,10 @@ public static class Di
 
         var logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("/Logs/BMDb_Log.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File("/Logs/BMDb.log", rollingInterval: RollingInterval.Day)
             .MinimumLevel.Information()
             .CreateLogger();
-
-
+        
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(logger);
 

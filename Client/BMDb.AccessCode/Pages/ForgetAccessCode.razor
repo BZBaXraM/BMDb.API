@@ -4,7 +4,7 @@
 @inject IAuthService AuthService
 
 <div class="access-code-container">
-    <h1>Get Access Code</h1>
+    <h1>Forget Access Code</h1>
     <EditForm Model="_accessCodeRequest" OnValidSubmit="ForgetAccessCodeRequest">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
@@ -12,7 +12,7 @@
             <label for="email">Email:</label>
             <InputText id="email" class="form-control" @bind-Value="_accessCodeRequest.Email"/>
         </div>
-        <button type="submit" class="btn btn-primary">Get Access Code</button>
+        <button type="submit" class="btn btn-primary">Get New Access Code</button>
     </EditForm>
     @if (_successMessage != null)
     {
