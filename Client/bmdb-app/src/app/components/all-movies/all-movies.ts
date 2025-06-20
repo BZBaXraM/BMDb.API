@@ -1,5 +1,4 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { MoviesQuery } from '../../models/query.model';
 import { MoviesService } from '../../services/movies.service';
 import { Movie } from '../../models/movie.model';
 import { RouterLink } from '@angular/router';
@@ -14,19 +13,18 @@ export class AllMovies {
 	movies = input.required<Movie[]>();
 	movieService = inject(MoviesService);
 	movie = signal<Movie[]>([]);
-	query = signal<MoviesQuery>({} as MoviesQuery);
+	query = signal<string>('');
 
 	getMovies() {
-		return this.movieService.getMovies(this.query()).subscribe((res) => {
-			this.movie.set(res);
-			console.log(res);
-		});
+		return this.movieService
+			.getMovies(this.query())
+			.subscribe((res) => this.movie.set(res));
 	}
 
 	getRandomMovie() {
-		return this.movieService.getRandomMovie().subscribe((res) => {
-			this.movie.set(res);
-		});
+		return this.movieService
+			.getRandomMovie()
+			.subscribe((res) => this.movie.set(res));
 	}
 
 	ngOnInit() {

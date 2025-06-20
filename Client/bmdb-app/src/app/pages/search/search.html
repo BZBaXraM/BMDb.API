@@ -1,0 +1,107 @@
+@if (movies()) {
+<div class="p-4">
+	<h1 class="text-3xl mb-6 text-center dark:text-white">Search Quotes</h1>
+	<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" autocomplete="off">
+		<div
+			class="text-xl grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_0.5fr] gap-4 mb-6"
+		>
+			<div class="w-full">
+				<input
+					type="text"
+					formControlName="title"
+					placeholder="Search by title"
+					class="p-2 w-full border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+				/>
+			</div>
+			<div class="w-full">
+				<input
+					type="text"
+					formControlName="year"
+					placeholder="Search by year"
+					class="p-2 w-full border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+				/>
+			</div>
+			<div class="w-full">
+				<input
+					type="text"
+					formControlName="genre"
+					placeholder="Search by genre"
+					class="p-2 w-full border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+				/>
+			</div>
+			<div class="w-full">
+				<input
+					type="number"
+					formControlName="pageSize"
+					placeholder="Limit"
+					class="p-2 w-full border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+				/>
+			</div>
+		</div>
+		<div class="text-center mb-6 flex justify-center gap-4">
+			<button
+				type="submit"
+				class="px-6 py-3 text-xl rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+			>
+				Search
+			</button>
+			<button
+				type="button"
+				(click)="clearInputs()"
+				class="px-6 py-3 text-xl rounded-lg bg-gray-300 text-gray-800 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+			>
+				Clear
+			</button>
+		</div>
+	</form>
+
+	<div>
+		@if (movies().length > 0) {
+		<div class="pt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			@for (item of movies(); track $index) {
+			<a
+				[routerLink]="['/movies', item.id]"
+				class="bg-gray-200 dark:bg-gray-800 p-4 shadow-md rounded-lg hover:translate-y-1.5 hover:bg-gray-100 hover:dark:bg-gray-700 transition-transform duration-400 block"
+			>
+				<img
+					[alt]="item.title"
+					[src]="item.poster"
+					class="w-fit mb-2"
+				/>
+				<p class="mb-4 text-xl italic text-gray-900 dark:text-gray-100">
+					{{ item.title }}
+				</p>
+				<p class="mb-2 text-gray-600 dark:text-gray-400">
+					Released: {{ item.year }}
+				</p>
+				<p
+					class="mb-10 text-right text-xl font-semibold text-gray-700 dark:text-gray-300"
+				>
+					- {{ item.director }}
+				</p>
+				<div class="flex flex-wrap mt-2">
+					@for (genre of item.genres; track $index) {
+					<span
+						class="text-lg bg-blue-200 text-gray-700 dark:text-gray-800 px-2 py-1 rounded-full mr-2 mb-2"
+					>
+						{{ genre }}
+					</span>
+
+					}
+				</div>
+			</a>
+			}
+
+			<!-- <app-all-movies [movies]="movies()" /> -->
+		</div>
+
+		}
+	</div>
+	@if (searchSubmitted && movies().length === 0) {
+	<p class="text-2xl pt-10 text-center text-gray-600 dark:text-gray-400">
+		No movies found.
+	</p>
+
+	}
+</div>
+}

@@ -1,4 +1,3 @@
-import { MoviesQuery } from './../models/query.model';
 import { environment } from './../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -11,7 +10,7 @@ export class MoviesService {
 	private readonly http = inject(HttpClient);
 	private baseUrl = environment.apiUrl;
 
-	getMovies(query?: MoviesQuery) {
+	getMovies(query?: string) {
 		return this.http.get<Movie[]>(`${this.baseUrl}movies?${query}`);
 	}
 
