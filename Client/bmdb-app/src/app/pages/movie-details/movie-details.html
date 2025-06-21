@@ -1,1 +1,43 @@
-<p>movie-details works!</p>
+@if (movie()) {
+<div
+	class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden"
+>
+	<div class="flex flex-col md:flex-row">
+		<div class="flex flex-col justify-center p-8">
+			<video controls poster="{{ movie()?.poster }}">
+				<source src="{{ movie()?.trailer }}" type="video/mp4" />
+			</video>
+		</div>
+		<div class="md:w-1/2 p-6 flex flex-col justify-center">
+			<h2
+				class="text-2xl font-bold text-violet-900 dark:text-violet-300 mb-2 text-center md:text-left"
+			>
+				{{ movie()?.title }}
+			</h2>
+			<p
+				class="text-gray-600 dark:text-gray-300 italic mb-4 text-center md:text-left"
+			>
+				{{ movie()?.plot }}
+			</p>
+			<ul class="space-y-2 text-gray-700 dark:text-gray-300 text-base">
+				<li>
+					<span class="font-semibold">Director:</span> {{
+					movie()?.director }}
+				</li>
+				<li>
+					<span class="font-semibold">Year:</span> {{ movie()?.year }}
+				</li>
+				<li>
+					<span class="font-semibold">IMDb ID:</span> {{
+					movie()?.imdbId }}
+				</li>
+				<li>
+					<span class="font-semibold">Genres:</span> {{
+					movie()?.genres?.join(', ') }}
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+}

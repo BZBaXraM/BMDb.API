@@ -3,7 +3,6 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// Controller for handling authentication requests.
 /// </summary>
-// [ServiceFilter(typeof(LogUserActivity))]
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
@@ -68,7 +67,8 @@ public class AuthController : ControllerBase
     /// <param name="forgetAccessCodeRequestDto"></param>
     /// <returns></returns>
     [HttpPost("forget-access-code")]
-    public async Task<IActionResult> ForgetAccessCodeAsync([FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    public async Task<IActionResult> ForgetAccessCodeAsync(
+        [FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
     {
         await _service.ForgetAccessCodeAsync(forgetAccessCodeRequestDto);
         return Ok("Access code forgotten successfully");

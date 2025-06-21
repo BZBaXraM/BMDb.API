@@ -3,7 +3,7 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// This class is used to define the MoviesController class.
 /// </summary>
-[Authorize("User")]
+// [Authorize("User")]
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController : ControllerBase
@@ -39,16 +39,17 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetMovieByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<Guid>> GetMovieByIdAsync([FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
     {
         var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
 
-        if (movie is null)
+        if (movie is not null)
         {
-            return NotFound();
+            return Ok(movie);
         }
 
-        return Ok(movie);
+        return NotFound();
     }
 
     /// <summary>

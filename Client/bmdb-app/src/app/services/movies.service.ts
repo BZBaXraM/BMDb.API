@@ -14,6 +14,10 @@ export class MoviesService {
 		return this.http.get<Movie[]>(`${this.baseUrl}movies?${query}`);
 	}
 
+	getMovieById(id: string) {
+		return this.http.get<Movie>(`${this.baseUrl}movies/${id}`);
+	}
+
 	getRandomMovie(limit: number = 10) {
 		return this.http.get<Movie[]>(
 			`${this.baseUrl}movies/random?limit=${limit}`
