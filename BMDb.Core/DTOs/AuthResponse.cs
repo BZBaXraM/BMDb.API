@@ -2,7 +2,7 @@ namespace BMDb.Core.DTOs;
 
 public class AuthResponse
 {
-    public string AccessToken { get; set; } = string.Empty;
-    public string RefreshToken { get; set; } = string.Empty;
-    public string? AccessCode { get; set; }
+    public string? AccessToken { get; set; }
+    public string? RefreshToken { get; set; } 
+    public DateTime RefreshTokenExpireTime { get; set; }
 }

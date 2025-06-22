@@ -64,13 +64,12 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Forgets the access code for a user, allowing them to reset it.  
     /// </summary>
-    /// <param name="forgetAccessCodeRequestDto"></param>
+    /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("forget-access-code")]
-    public async Task<IActionResult> ForgetAccessCodeAsync(
-        [FromBody] ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    public async Task<IActionResult> ForgetAccessCodeAsync([FromBody] ForgetAccessCodeRequestDto request)
     {
-        await _service.ForgetAccessCodeAsync(forgetAccessCodeRequestDto);
+        await _service.ForgetAccessCodeAsync(request);
         return Ok("Access code forgotten successfully");
     }
 

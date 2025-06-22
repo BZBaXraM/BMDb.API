@@ -27,7 +27,8 @@ public class JwtService : IJwtService
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity([
+            Subject = new ClaimsIdentity(
+            [
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("Role", user.Role)
@@ -37,16 +38,22 @@ public class JwtService : IJwtService
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
         };
 
+        if (!string.IsNullOrEmpty(_jwtConfig.Issuer))
+        {
+            tokenDescriptor.Issuer = _jwtConfig.Issuer;
+        }
+
+        if (!string.IsNullOrEmpty(_jwtConfig.Audience))
+        {
+            tokenDescriptor.Audience = _jwtConfig.Audience;
+        }
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
 
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
 }

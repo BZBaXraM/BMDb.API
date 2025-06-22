@@ -48,7 +48,6 @@ public class AuthService : IAuthService
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
             RefreshToken = user.RefreshToken,
-            AccessCode = accessCode
         };
     }
 
@@ -70,9 +69,9 @@ public class AuthService : IAuthService
 
         return new AuthResponse
         {
-            AccessCode = user.AccessCode,
             AccessToken = _jwtService.GenerateSecurityToken(user),
-            RefreshToken = user.RefreshToken!
+            RefreshToken = user.RefreshToken!,
+            RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
     }
 
@@ -86,6 +85,7 @@ public class AuthService : IAuthService
         }
 
         user.RefreshToken = _jwtService.GenerateRefreshToken();
+        user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7);
 
         return new TokenDto
         {

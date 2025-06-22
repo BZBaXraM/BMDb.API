@@ -3,7 +3,7 @@ namespace BMDb.API.Controllers;
 /// <summary>
 /// This class is used to define the MoviesController class.
 /// </summary>
-// [Authorize("User")]
+[Authorize("User")]
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController : ControllerBase
@@ -11,7 +11,7 @@ public class MoviesController : ControllerBase
     private readonly IMoviesService _service;
 
     /// <summary>
-    /// This constructor is used to inject the MovieContext class.
+    /// Constructor for the MoviesController
     /// </summary>
     /// <param name="service"></param>
     public MoviesController(IMoviesService service)
