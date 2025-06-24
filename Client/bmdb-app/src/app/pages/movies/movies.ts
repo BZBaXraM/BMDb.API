@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { AllMovies } from '../../components/all-movies/all-movies';
 import { MoviesService } from '../../services/movies.service';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
 	selector: 'app-movies',
-	imports: [AllMovies],
+	imports: [AllMovies, Navbar],
 	templateUrl: './movies.html',
 	styleUrl: './movies.css',
 })

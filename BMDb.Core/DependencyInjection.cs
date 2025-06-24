@@ -29,7 +29,7 @@ public static class DependencyInjection
             })
             .AddJwtBearer(jwt =>
             {
-                jwt.SaveToken = true;
+                // jwt.SaveToken = true;
                 jwt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

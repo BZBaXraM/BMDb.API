@@ -1,7 +1,6 @@
-@if (movie() && movie().length > 0) {
+@if (movie()) {
+<app-navbar></app-navbar>
 <div>
 	<app-all-movies [movies]="movie()" />
 </div>
-} @else {
-<div>Loading movies or no movies available...</div>
 }

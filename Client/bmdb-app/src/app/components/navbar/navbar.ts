@@ -10,11 +10,21 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Navbar {
 	public auth = inject(AuthService);
-	public isLoggedIn = this.auth.isAuth;
 	private readonly router = inject(Router);
+
+	mobileMenuOpen = false;
+
+	toggleMobileMenu() {
+		this.mobileMenuOpen = !this.mobileMenuOpen;
+	}
+
+	closeMobileMenu() {
+		this.mobileMenuOpen = false;
+	}
 
 	public async logout() {
 		this.auth.logout();
+		this.closeMobileMenu();
 		await this.router.navigate(['/login']);
 	}
 }

@@ -23,7 +23,7 @@ export class Login {
 		accessCode: new FormControl<string | null>(null, Validators.required),
 	});
 
-	onSubmit() {
+	async onSubmit() {
 		if (this.form.invalid) {
 			return;
 		}

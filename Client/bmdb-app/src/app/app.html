@@ -1,4 +1,6 @@
 <div>
-	<!-- <app-navbar></app-navbar> -->
+	@if (!authService.isAuth) {
+	<app-login></app-login>
+	}
 	<router-outlet></router-outlet>
 </div>

@@ -32,7 +32,14 @@ public class AuthService : IAuthService
             throw new Exception("Invalid registration request");
         }
 
-        var user = new User
+        var existingUser = await _userRepository.GetUserByEmailAsync(registerRequest.Email);
+
+        if (existingUser != null)
+        {
+            throw new Exception("User with this email already exists");
+        }
+
+        User user = new()
         {
             Email = registerRequest.Email,
             AccessCode = accessCode,
@@ -42,7 +49,6 @@ public class AuthService : IAuthService
         await _userRepository.AddUserAsync(user);
 
         await _emailService.SendAccessCodeAsync(registerRequest.Email, accessCode);
-
 
         return new AuthResponse
         {
@@ -67,12 +73,26 @@ public class AuthService : IAuthService
             throw new Exception("Invalid login request");
         }
 
+        user.RefreshToken = _jwtService.GenerateRefreshToken();
+        user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7);
+
+        await _userRepository.SaveUserAsync();
+
         return new AuthResponse
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
-            RefreshToken = user.RefreshToken!,
+            RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
+
+        // return new UserDto
+        // {
+        //     Email = user.Email,
+        //     AccessCode = user.AccessCode,
+        //     AccessToken = _jwtService.GenerateSecurityToken(user),
+        //     RefreshToken = user.RefreshToken,
+        //     RefreshTokenExpireTime = user.RefreshTokenExpireTime
+        // };
     }
 
     public async Task<TokenDto> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
@@ -84,8 +104,17 @@ public class AuthService : IAuthService
             throw new Exception("Invalid refresh token");
         }
 
+        if (user.RefreshTokenExpireTime < DateTime.UtcNow)
+        {
+            user.RefreshToken = null;
+            await _userRepository.SaveUserAsync();
+            throw new Exception("Refresh token has expired");
+        }
+
         user.RefreshToken = _jwtService.GenerateRefreshToken();
         user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7);
+
+        await _userRepository.SaveUserAsync();
 
         return new TokenDto
         {
@@ -110,7 +139,6 @@ public class AuthService : IAuthService
         await _userRepository.SaveUserAsync();
         await _emailService.SendAccessCodeAsync(user.Email, accessCode);
     }
-
 
     public async Task LogoutAsync(string accessToken, string? userName)
     {

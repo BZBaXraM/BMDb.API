@@ -1,10 +1,11 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MoviesService } from '../../services/movies.service';
 import { Movie } from '../../models/movie.model';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
 	selector: 'app-movie-details',
-	imports: [],
+	imports: [Navbar],
 	templateUrl: './movie-details.html',
 	styleUrl: './movie-details.css',
 })

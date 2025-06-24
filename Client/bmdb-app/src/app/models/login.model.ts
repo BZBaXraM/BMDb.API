@@ -1,3 +1,3 @@
-export interface Login {
+export interface LoginModel {
 	accessCode: string;
 }

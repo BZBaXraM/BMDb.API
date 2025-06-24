@@ -3,10 +3,11 @@ import { MoviesService } from '../../services/movies.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Movie } from '../../models/movie.model';
 import { RouterLink } from '@angular/router';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
 	selector: 'app-search',
-	imports: [ReactiveFormsModule, RouterLink],
+	imports: [ReactiveFormsModule, RouterLink, Navbar],
 	templateUrl: './search.html',
 	styleUrl: './search.css',
 })
@@ -72,10 +73,6 @@ export class Search {
 			this.moviesService.getMovies(query).subscribe({
 				next: (data) => {
 					this.movies.set(data);
-				},
-				error: (err) => {
-					console.error('Error fetching quotes:', err);
-					this.movies.set([]);
 				},
 			});
 		}

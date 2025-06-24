@@ -9,6 +9,7 @@ import {
 import { MoviesService } from '../../services/movies.service';
 import { Movie } from '../../models/movie.model';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
 	selector: 'app-all-movies',
@@ -24,12 +25,14 @@ export class AllMovies implements OnInit {
 	errors = signal<string[]>([]);
 	loading = signal<boolean>(false);
 	private readonly destroyRef = inject(DestroyRef);
+	authService = inject(AuthService);
 
 	getMovies() {
 		return this.movieService.getMovies(this.query()).subscribe({
 			next: (res) => {
 				this.movie.set(res);
 				this.loading.set(true);
+				console.log('Movies fetched successfully:', res);
 			},
 			error: (err) => {
 				this.errors.set([...this.errors(), err.message]);
@@ -43,6 +46,7 @@ export class AllMovies implements OnInit {
 			next: (res) => {
 				this.movie.set(res);
 				this.loading.set(true);
+				console.log('Random movie fetched successfully:', res);
 			},
 			error: (err) => {
 				this.errors.set([...this.errors(), err.message]);
@@ -53,9 +57,11 @@ export class AllMovies implements OnInit {
 	}
 
 	ngOnInit() {
-		const subscription = this.getMovies();
-		this.destroyRef.onDestroy(() => {
-			subscription.unsubscribe();
-		});
+		if (this.authService.isAuth) {
+			const subscription = this.getMovies();
+			this.destroyRef.onDestroy(() => {
+				subscription.unsubscribe();
+			});
+		}
 	}
 }
