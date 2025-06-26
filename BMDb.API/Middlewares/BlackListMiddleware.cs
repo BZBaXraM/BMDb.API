@@ -25,7 +25,6 @@ public class BlackListMiddleware : IMiddleware
 
         token = token?.Replace("Bearer ", "");
 
-
         if (!string.IsNullOrWhiteSpace(token) && _blackListService.IsTokenBlackListed(token))
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

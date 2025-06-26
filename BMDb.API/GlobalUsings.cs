@@ -1,11 +1,13 @@
 // Global using directives
 
 global using System.Net;
+global using System.Text.Json;
 global using BMDb.API;
 global using BMDb.API.Filters;
 global using BMDb.API.Middlewares;
 global using BMDb.Core;
 global using BMDb.Core.DTOs;
+global using BMDb.Core.Exceptions;
 global using BMDb.Core.ServiceContracts;
 global using BMDb.Infrastructure;
 global using BMDb.Infrastructure.Extensions;

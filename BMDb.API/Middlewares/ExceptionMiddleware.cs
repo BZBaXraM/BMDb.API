@@ -1,6 +1,3 @@
-using System.Text.Json;
-using BMDb.Core.Exceptions;
-
 namespace BMDb.API.Middlewares;
 
 /// <summary>
