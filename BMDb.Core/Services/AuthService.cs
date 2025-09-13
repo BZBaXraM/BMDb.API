@@ -84,15 +84,6 @@ public class AuthService : IAuthService
             RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
-
-        // return new UserDto
-        // {
-        //     Email = user.Email,
-        //     AccessCode = user.AccessCode,
-        //     AccessToken = _jwtService.GenerateSecurityToken(user),
-        //     RefreshToken = user.RefreshToken,
-        //     RefreshTokenExpireTime = user.RefreshTokenExpireTime
-        // };
     }
 
     public async Task<TokenDto> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
