@@ -21,11 +21,10 @@ public interface IAdminService
     /// <summary>
     /// This method is used to update a movie.
     /// </summary>
-    /// <param name="id"></param>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
+    Task<MovieResponse?> UpdateMovieAsync(UpdateMovieRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>

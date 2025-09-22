@@ -7,10 +7,10 @@ global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.RegularExpressions;
-global using AutoMapper;
+
 global using BMDb.Core.Configs;
 global using BMDb.Core.DTOs;
-global using BMDb.Core.Mappings;
+
 global using BMDb.Core.RepositoryContracts;
 global using BMDb.Core.ServiceContracts;
 global using BMDb.Core.Services;

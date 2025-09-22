@@ -1,57 +1,60 @@
+using BMDb.Core.Extensions;
+
 namespace BMDb.Core.Services;
 
 public class AdminService : IAdminService
 {
     private readonly IMoviesRepository _moviesRepository;
-    private readonly IMapper _mapper;
 
-    public AdminService(IMoviesRepository moviesRepository, IMapper mapper)
+    public AdminService(IMoviesRepository moviesRepository)
     {
         _moviesRepository = moviesRepository;
-        _mapper = mapper;
     }
 
     public async Task<MovieResponse?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var movie = await _moviesRepository.GetMovieByIdAsync(id, cancellationToken);
-        return movie == null ? null : _mapper.Map<MovieResponse>(movie);
+        var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
+
+        return movie == null ? throw new ArgumentException($"Movie with id {id} not found") : movie.ToDto();
     }
 
     public async Task<MovieResponse> AddMovieAsync(AddMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        var movie = _mapper.Map<Movie>(request);
+        var movie = request.ToEntity();
 
-        var addedMovie = await _moviesRepository.AddMovieAsync(movie, cancellationToken);
+        _moviesRepository.Add(movie);
 
-        return _mapper.Map<MovieResponse>(addedMovie);
+        await _moviesRepository.SaveChangesAsync(cancellationToken);
+
+        return movie.ToDto();
     }
 
-    public async Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
+    public async Task<MovieResponse?> UpdateMovieAsync(UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        var movie = await _moviesRepository.GetMovieByIdAsync(id, cancellationToken);
-        if (movie == null)
+        if (!_moviesRepository.Exists(request.Id))
         {
-            return null;
+            throw new ArgumentException($"Movie with id {request.Id} not found");
         }
 
-        _mapper.Map(request, movie);
+        _moviesRepository.Update(request.ToUpdateDto());
+        await _moviesRepository.SaveChangesAsync(cancellationToken);
 
-        var updatedMovie = await _moviesRepository.UpdateMovieAsync(id, movie, cancellationToken);
-
-        return updatedMovie == null ? null : _mapper.Map<MovieResponse>(updatedMovie);
+        var updatedMovie = await _moviesRepository.GetByIdAsync(request.Id, cancellationToken);
+        return updatedMovie?.ToDto();
     }
 
     public async Task<bool> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var movie = await _moviesRepository.GetMovieByIdAsync(id, cancellationToken);
+        var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
         if (movie == null)
         {
-            return false;
+            throw new ArgumentException($"Movie with id {id} not found");
         }
 
-        await _moviesRepository.DeleteMovieAsync(id, cancellationToken);
+        _moviesRepository.Delete(movie);
+        await _moviesRepository.SaveChangesAsync(cancellationToken);
 
         return true;
     }

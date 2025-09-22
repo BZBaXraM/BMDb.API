@@ -5,6 +5,7 @@ namespace BMDb.Core.DTOs;
 /// </summary>
 public class UpdateMovieRequest
 {
+    public Guid Id { get; set; }
     /// <summary>
     /// This property is used to define the Title property.
     /// </summary>

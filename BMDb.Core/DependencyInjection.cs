@@ -39,11 +39,6 @@ public static class DependencyInjection
                 };
             });
 
-
-        services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-        services.AddFluentValidationAutoValidation();
-        services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
         services.AddHttpContextAccessor();
 
         services.AddSingleton<RegisterRequestValidator>();

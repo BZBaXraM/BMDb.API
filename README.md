@@ -14,7 +14,7 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - ASP.NET Core
 - Entity Framework Core
 - PostgresSQL
-- AutoMapper
+
 - FluentValidation
 - JWT Bearer Authentication with Email Confirmation
 - Cors

@@ -58,7 +58,12 @@ public class MoviesRepository : IMoviesRepository
         return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
     }
 
-    public async Task<Movie?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public bool Exists(Guid id)
+    {
+        return _context.Movies.Any(m => m.Id == id);
+    }
+
+    public async Task<Movie?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var movie = await _context.Movies
             .AsNoTracking()
@@ -67,52 +72,43 @@ public class MoviesRepository : IMoviesRepository
         return movie;
     }
 
-    public async Task<Movie> AddMovieAsync(Movie movie, CancellationToken cancellationToken = default)
+    public void Add(Movie movie)
     {
         _context.Movies.Add(movie);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return movie;
     }
 
-    public async Task<Movie?> UpdateMovieAsync(Guid id, Movie movie, CancellationToken cancellationToken = default)
+    public void Update(Movie movie)
     {
-        var existingMovie = await _context.Movies
-            .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
-
-        if (existingMovie == null)
-        {
-            return null;
-        }
-
-        existingMovie.Title = movie.Title;
-        existingMovie.Poster = movie.Poster;
-        existingMovie.Trailer = movie.Trailer;
-        existingMovie.Year = movie.Year;
-        existingMovie.Director = movie.Director;
-        existingMovie.Genres = movie.Genres;
-        existingMovie.Plot = movie.Plot;
-        existingMovie.ImdbId = movie.ImdbId;
-
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return existingMovie;
+        _context.Entry(movie).State = EntityState.Modified;
     }
 
-    public async Task<Movie> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default)
+    // public async Task<Movie?> UpdateMovieAsync(Guid id, Movie movie, CancellationToken cancellationToken = default)
+    // {
+    //     var existingMovie = await _context.Movies
+    //         .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+    //
+    //     if (existingMovie == null)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     existingMovie.Title = movie.Title;
+    //     existingMovie.Poster = movie.Poster;
+    //     existingMovie.Trailer = movie.Trailer;
+    //     existingMovie.Year = movie.Year;
+    //     existingMovie.Director = movie.Director;
+    //     existingMovie.Genres = movie.Genres;
+    //     existingMovie.Plot = movie.Plot;
+    //     existingMovie.ImdbId = movie.ImdbId;
+    //
+    //     await _context.SaveChangesAsync(cancellationToken);
+    //
+    //     return existingMovie;
+    // }
+
+    public void Delete(Movie movie)
     {
-        var movie = await _context.Movies
-            .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
-
-        if (movie == null)
-        {
-            throw new KeyNotFoundException($"Movie with id {id} not found.");
-        }
-
         _context.Movies.Remove(movie);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return movie;
     }
 
     public async Task<List<Movie>> GetMovieByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default)
@@ -133,5 +129,10 @@ public class MoviesRepository : IMoviesRepository
             .ToListAsync(cancellationToken);
 
         return movies;
+    }
+
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 }
