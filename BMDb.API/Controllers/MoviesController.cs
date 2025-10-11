@@ -44,12 +44,7 @@ public class MoviesController : ControllerBase
     {
         var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
 
-        if (movie is not null)
-        {
-            return Ok(movie);
-        }
-
-        return NotFound();
+        return Ok(movie);
     }
 
     /// <summary>

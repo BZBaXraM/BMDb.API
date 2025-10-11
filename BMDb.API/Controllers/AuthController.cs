@@ -26,9 +26,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> RegisterAsync([FromBody] RegisterRequest request)
     {
-        var user = await _service.RegisterUserAsync(request);
-
-        if (user is null) return NotFound();
+        await _service.RegisterUserAsync(request);
 
         return Ok("Check your email for the access code.");
     }
@@ -41,11 +39,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginRequest request)
     {
-        var user = await _service.LoginUserAsync(request);
-
-        if (user is null) return Unauthorized();
-
-        return Ok(user);
+        return Ok(await _service.LoginUserAsync(request));
     }
 
     /// <summary>
