@@ -10,6 +10,7 @@ public static class DatabaseExtensions
 
         await context.Database.MigrateAsync();
         await authContext.Database.MigrateAsync();
+        
         await SeedAsync(context, authContext);
     }
 

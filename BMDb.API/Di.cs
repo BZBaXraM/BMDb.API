@@ -1,3 +1,5 @@
+using Microsoft.OpenApi;
+
 namespace BMDb.API;
 
 /// <summary>
@@ -16,10 +18,10 @@ public static class Di
 
         var logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("/Logs/BMDb.log", rollingInterval: RollingInterval.Day)
+            .WriteTo.File("/Logs/BMDb.txt", rollingInterval: RollingInterval.Day)
             .MinimumLevel.Information()
             .CreateLogger();
-        
+
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(logger);
 
@@ -39,31 +41,21 @@ public static class Di
             var path = Path.Combine(AppContext.BaseDirectory, "BahramMVMovieAPI.xml");
             setup.IncludeXmlComments(path);
 
-            setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description =
-                    "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
-            });
-
-            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
+            setup.AddSecurityDefinition(
+                "Bearer",
+                new OpenApiSecurityScheme
                 {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    []
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token. Example: Bearer {token}",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer",
                 }
-            });
+            );
+
+            setup.AddSecurityRequirement(document =>
+                new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] });
         });
 
         return services;

@@ -5,12 +5,11 @@ namespace BMDb.Core.DTOs;
 /// </summary>
 public class UpdateMovieRequest
 {
-    public Guid Id { get; set; }
     /// <summary>
     /// This property is used to define the Title property.
     /// </summary>
 
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
 
     /// <summary>
     /// This property is used to define the Poster property.
@@ -26,19 +25,19 @@ public class UpdateMovieRequest
     /// This property is used to define the Year property.
     /// </summary>
 
-    public int Year { get; set; }
+    public int? Year { get; set; }
 
     /// <summary>
     /// This property is used to define the Director property.
     /// </summary>
 
-    public string Director { get; set; } = string.Empty;
+    public string? Director { get; set; }
 
     /// <summary>
     /// This property is used to define the Genre property.
     /// </summary>
 
-    public List<string> Genres { get; set; } = [];
+    public List<string>? Genres { get; set; }
 
     /// <summary>
     /// This property is used to define the Plot property.
@@ -48,5 +47,5 @@ public class UpdateMovieRequest
     /// <summary>
     /// This property is used to define the ImdbId property.
     /// </summary>
-    public string ImdbId { get; set; } = string.Empty;
+    public string? ImdbId { get; set; } 
 }

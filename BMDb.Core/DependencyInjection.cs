@@ -13,7 +13,6 @@ public static class DependencyInjection
 
         services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
 
-        services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 

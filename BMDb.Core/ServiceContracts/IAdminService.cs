@@ -24,7 +24,7 @@ public interface IAdminService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse?> UpdateMovieAsync(UpdateMovieRequest request,
+    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>

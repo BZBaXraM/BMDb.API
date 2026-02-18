@@ -17,7 +17,6 @@ global using BMDb.Core.Services;
 global using BMDb.Core.Validators;
 global using BMDb.Domain.Entities;
 global using FluentValidation;
-global using FluentValidation.AspNetCore;
 global using MailKit.Net.Smtp;
 global using MailKit.Security;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;

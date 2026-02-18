@@ -38,15 +38,16 @@ public class AdminController : ControllerBase
     /// <summary>
     /// This method is used to update a movie.
     /// </summary>
+    /// <param name="id"></param>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPut("update-movie")]
+    [HttpPut("update-movie/{id:guid}")]
     [ValidateModel]
-    public async Task<IActionResult> UpdateMovieAsync([FromBody] UpdateMovieRequest request,
+    public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        return Ok(await _service.UpdateMovieAsync(request, cancellationToken));
+        return Ok(await _service.UpdateMovieAsync(id, request, cancellationToken));
     }
 
     /// <summary>

@@ -30,18 +30,29 @@ public class AdminService : IAdminService
         return movie.ToDto();
     }
 
-    public async Task<MovieResponse?> UpdateMovieAsync(UpdateMovieRequest request,
+    public async Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        if (!_moviesRepository.Exists(request.Id))
+        var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
+
+        if (movie == null)
         {
-            throw new ArgumentException($"Movie with id {request.Id} not found");
+            throw new ArgumentException($"Movie with id {id} not found");
         }
 
-        _moviesRepository.Update(request.ToUpdateDto());
+        movie.Title = request.Title ?? movie.Title;
+        movie.Poster = request.Poster ?? movie.Poster;
+        movie.Trailer = request.Trailer ?? movie.Trailer;
+        movie.Year = request.Year ?? movie.Year;
+        movie.Director = request.Director ?? movie.Director;
+        movie.Genres = request.Genres ?? movie.Genres;
+        movie.Plot = request.Plot ?? movie.Plot;
+        movie.ImdbId = request.ImdbId ?? movie.ImdbId;
+
+        _moviesRepository.Update(movie);
         await _moviesRepository.SaveChangesAsync(cancellationToken);
 
-        var updatedMovie = await _moviesRepository.GetByIdAsync(request.Id, cancellationToken);
+        var updatedMovie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
         return updatedMovie?.ToDto();
     }
 

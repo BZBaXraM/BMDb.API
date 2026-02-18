@@ -19,22 +19,6 @@ public static class MovieMappingExtensions
     }
 
 
-    public static Movie ToUpdateDto(this UpdateMovieRequest request)
-    {
-        return new Movie
-        {
-            Id = request.Id,
-            Title = request.Title,
-            Poster = request.Poster,
-            Trailer = request.Trailer,
-            Year = request.Year,
-            Director = request.Director,
-            Genres = request.Genres,
-            Plot = request.Plot,
-            ImdbId = request.ImdbId
-        };
-    }
-
     public static Movie ToEntity(this AddMovieRequest request)
     {
         return new Movie
