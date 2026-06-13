@@ -24,11 +24,12 @@ public class MoviesController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<MovieResponse>> GetMoviesAsync([FromQuery] MoviesQueryDto dto,
+    public async Task<ActionResult<ResponseModel<List<MovieResponse>>>> GetMoviesAsync(
+        [FromQuery] MoviesQueryResponse response,
         CancellationToken cancellationToken = default)
     {
-        var movies = await _service.GetMoviesAsync(dto, cancellationToken);
-        return Ok(movies);
+        var responseModel = await _service.GetMoviesAsync(response, cancellationToken);
+        return StatusCode(responseModel.StatusCode, responseModel);
     }
 
 
@@ -39,12 +40,12 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Guid>> GetMovieByIdAsync([FromRoute] Guid id,
+    public async Task<ActionResult<ResponseModel<MovieResponse>>> GetMovieByIdAsync([FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var movie = await _service.GetMovieByIdAsync(id, cancellationToken);
+        var response = await _service.GetMovieByIdAsync(id, cancellationToken);
 
-        return Ok(movie);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -54,11 +55,11 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("imdb/{imdb}")]
-    public async Task<IActionResult> GetMovieByImdbIdAsync(string imdb,
+    public async Task<ActionResult<ResponseModel<IEnumerable<MovieResponse>>>> GetMovieByImdbIdAsync(string imdb,
         CancellationToken cancellationToken = default)
     {
-        var movies = await _service.GetMovieByImdbIdAsync(imdb, cancellationToken);
-        return Ok(movies);
+        var response = await _service.GetMovieByImdbIdAsync(imdb, cancellationToken);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -68,10 +69,11 @@ public class MoviesController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("random")]
-    public async Task<IActionResult> GetRandomMoviesAsync([FromQuery] int limit = 10,
+    public async Task<ActionResult<ResponseModel<IEnumerable<MovieResponse>>>> GetRandomMoviesAsync(
+        [FromQuery] int limit = 10,
         CancellationToken cancellationToken = default)
     {
-        var movies = await _service.GetRandomMoviesAsync(limit, cancellationToken);
-        return Ok(movies);
+        var response = await _service.GetRandomMoviesAsync(limit, cancellationToken);
+        return StatusCode(response.StatusCode, response);
     }
 }

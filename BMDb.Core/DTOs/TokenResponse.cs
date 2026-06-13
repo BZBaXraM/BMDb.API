@@ -1,6 +1,6 @@
 namespace BMDb.Core.DTOs;
 
-public class TokenDto
+public class TokenResponse
 {
     public string AccessToken { get; set; } = string.Empty;
 

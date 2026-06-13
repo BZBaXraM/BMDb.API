@@ -17,15 +17,16 @@ export class MovieDetails implements OnInit {
 	private readonly destroyRef = inject(DestroyRef);
 
 	getMovieById(id: string) {
+		this.loading.set(true);
+		this.errors.set([]);
 		return this.movieService.getMovieById(id).subscribe({
 			next: (res) => {
 				this.movie.set(res);
-				this.loading.set(true);
+				this.loading.set(false);
 			},
 			error: (err) => {
 				this.errors.set([...this.errors(), err.message]);
 				this.loading.set(false);
-				console.log(err);
 			},
 		});
 	}

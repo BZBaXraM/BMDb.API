@@ -11,14 +11,17 @@ public class AdminService : IAdminService
         _moviesRepository = moviesRepository;
     }
 
-    public async Task<MovieResponse?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ResponseModel<MovieResponse>> GetMovieByIdAsync(Guid id,
+        CancellationToken cancellationToken = default)
     {
         var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
 
-        return movie == null ? throw new ArgumentException($"Movie with id {id} not found") : movie.ToDto();
+        return movie == null
+            ? ResponseModel.Failure<MovieResponse>($"Movie with id {id} not found", 404)
+            : ResponseModel.Success(movie.ToDto());
     }
 
-    public async Task<MovieResponse> AddMovieAsync(AddMovieRequest request,
+    public async Task<ResponseModel<MovieResponse>> AddMovieAsync(AddMovieRequest request,
         CancellationToken cancellationToken = default)
     {
         var movie = request.ToEntity();
@@ -27,17 +30,17 @@ public class AdminService : IAdminService
 
         await _moviesRepository.SaveChangesAsync(cancellationToken);
 
-        return movie.ToDto();
+        return new ResponseModel<MovieResponse>(movie.ToDto(), true, "Movie created", 201);
     }
 
-    public async Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
+    public async Task<ResponseModel<MovieResponse>> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
         var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
 
         if (movie == null)
         {
-            throw new ArgumentException($"Movie with id {id} not found");
+            return ResponseModel.Failure<MovieResponse>($"Movie with id {id} not found", 404);
         }
 
         movie.Title = request.Title ?? movie.Title;
@@ -53,20 +56,20 @@ public class AdminService : IAdminService
         await _moviesRepository.SaveChangesAsync(cancellationToken);
 
         var updatedMovie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
-        return updatedMovie?.ToDto();
+        return ResponseModel.Success(updatedMovie!.ToDto(), "Movie updated");
     }
 
-    public async Task<bool> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ResponseModel> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
         if (movie == null)
         {
-            throw new ArgumentException($"Movie with id {id} not found");
+            return ResponseModel.Failure($"Movie with id {id} not found", 404);
         }
 
         _moviesRepository.Delete(movie);
         await _moviesRepository.SaveChangesAsync(cancellationToken);
 
-        return true;
+        return ResponseModel.Success("Movie deleted");
     }
 }

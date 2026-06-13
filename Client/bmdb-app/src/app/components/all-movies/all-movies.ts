@@ -24,15 +24,17 @@ export class AllMovies implements OnInit {
 	query = signal<string>('');
 	errors = signal<string[]>([]);
 	loading = signal<boolean>(false);
+	skeletons = Array.from({ length: 8 });
 	private readonly destroyRef = inject(DestroyRef);
 	authService = inject(AuthService);
 
 	getMovies() {
+		this.loading.set(true);
+		this.errors.set([]);
 		return this.movieService.getMovies(this.query()).subscribe({
 			next: (res) => {
-				this.movie.set(res);
-				this.loading.set(true);
-				console.log('Movies fetched successfully:', res);
+				this.movie.set(res ?? []);
+				this.loading.set(false);
 			},
 			error: (err) => {
 				this.errors.set([...this.errors(), err.message]);
@@ -42,16 +44,16 @@ export class AllMovies implements OnInit {
 	}
 
 	getRandomMovie() {
+		this.loading.set(true);
+		this.errors.set([]);
 		return this.movieService.getRandomMovie().subscribe({
 			next: (res) => {
-				this.movie.set(res);
-				this.loading.set(true);
-				console.log('Random movie fetched successfully:', res);
+				this.movie.set(res ?? []);
+				this.loading.set(false);
 			},
 			error: (err) => {
 				this.errors.set([...this.errors(), err.message]);
 				this.loading.set(false);
-				console.log('Error fetching random movie:', err);
 			},
 		});
 	}

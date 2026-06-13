@@ -21,7 +21,7 @@ public class AuthService : IAuthService
         _blackListService = blackListService;
     }
 
-    public async Task<AuthResponse?> RegisterUserAsync(RegisterRequest registerRequest)
+    public async Task<ResponseModel<AuthResponse>> RegisterUserAsync(RegisterRequest registerRequest)
     {
         var accessCode = GenerateAccessCode();
 
@@ -29,14 +29,15 @@ public class AuthService : IAuthService
 
         if (!validationResult.IsValid)
         {
-            throw new Exception("Invalid registration request");
+            return ResponseModel.Failure<AuthResponse>("Invalid registration request", 400,
+                validationResult.Errors.Select(e => e.ErrorMessage).ToList());
         }
 
         var existingUser = await _userRepository.GetUserByEmailAsync(registerRequest.Email);
 
         if (existingUser != null)
         {
-            throw new Exception("User with this email already exists");
+            return ResponseModel.Failure<AuthResponse>("User with this email already exists", 409);
         }
 
         User user = new()
@@ -50,27 +51,30 @@ public class AuthService : IAuthService
 
         await _emailService.SendAccessCodeAsync(registerRequest.Email, accessCode);
 
-        return new AuthResponse
+        var authResponse = new AuthResponse
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
             RefreshToken = user.RefreshToken,
         };
+
+        return ResponseModel.Success(authResponse, "Check your email for the access code.");
     }
 
-    public async Task<AuthResponse?> LoginUserAsync(LoginRequest loginRequest)
+    public async Task<ResponseModel<AuthResponse>> LoginUserAsync(LoginRequest loginRequest)
     {
         var user = await _userRepository.GetAccessCodeAsync(loginRequest.AccessCode);
 
         if (user is null)
         {
-            throw new Exception("Invalid access code");
+            return ResponseModel.Failure<AuthResponse>("Invalid access code", 401);
         }
 
         var validationResult = await _loginRequestValidator.ValidateAsync(loginRequest);
 
         if (!validationResult.IsValid)
         {
-            throw new Exception("Invalid login request");
+            return ResponseModel.Failure<AuthResponse>("Invalid login request", 400,
+                validationResult.Errors.Select(e => e.ErrorMessage).ToList());
         }
 
         user.RefreshToken = _jwtService.GenerateRefreshToken();
@@ -78,28 +82,30 @@ public class AuthService : IAuthService
 
         await _userRepository.SaveUserAsync();
 
-        return new AuthResponse
+        var authResponse = new AuthResponse
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
             RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
+
+        return ResponseModel.Success(authResponse, "Login successful");
     }
 
-    public async Task<TokenDto> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
+    public async Task<ResponseModel<TokenResponse>> GetNewRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
     {
         var user = await _userRepository.GetUserByRefreshTokenAsync(refreshTokenRequest.RefreshToken!);
 
         if (user is null)
         {
-            throw new Exception("Invalid refresh token");
+            return ResponseModel.Failure<TokenResponse>("Invalid refresh token", 401);
         }
 
         if (user.RefreshTokenExpireTime < DateTime.UtcNow)
         {
             user.RefreshToken = null;
             await _userRepository.SaveUserAsync();
-            throw new Exception("Refresh token has expired");
+            return ResponseModel.Failure<TokenResponse>("Refresh token has expired", 401);
         }
 
         user.RefreshToken = _jwtService.GenerateRefreshToken();
@@ -107,21 +113,23 @@ public class AuthService : IAuthService
 
         await _userRepository.SaveUserAsync();
 
-        return new TokenDto
+        var tokenDto = new TokenResponse
         {
             AccessToken = _jwtService.GenerateSecurityToken(user),
             RefreshToken = user.RefreshToken,
             RefreshTokenExpireTime = user.RefreshTokenExpireTime
         };
+
+        return ResponseModel.Success(tokenDto);
     }
 
-    public async Task ForgetAccessCodeAsync(ForgetAccessCodeRequestDto forgetAccessCodeRequestDto)
+    public async Task<ResponseModel> ForgetAccessCodeAsync(ForgetAccessCodeRequest forgetAccessCodeRequest)
     {
-        var user = await _userRepository.GetUserByEmailAsync(forgetAccessCodeRequestDto.Email);
+        var user = await _userRepository.GetUserByEmailAsync(forgetAccessCodeRequest.Email);
 
         if (user is null)
         {
-            throw new Exception("User not found");
+            return ResponseModel.Failure("User not found", 404);
         }
 
         var accessCode = GenerateAccessCode();
@@ -129,9 +137,11 @@ public class AuthService : IAuthService
 
         await _userRepository.SaveUserAsync();
         await _emailService.SendAccessCodeAsync(user.Email, accessCode);
+
+        return ResponseModel.Success("Check your email for the new access code.");
     }
 
-    public async Task LogoutAsync(string accessToken, string? userName)
+    public async Task<ResponseModel> LogoutAsync(string accessToken, string? userName)
     {
         _blackListService.AddTokenToBlackList(accessToken);
         var user = await _userRepository.GetUserDataAsync(accessToken, userName);
@@ -142,6 +152,8 @@ public class AuthService : IAuthService
             user.RefreshTokenExpireTime = DateTime.UtcNow;
             await _userRepository.SaveUserAsync();
         }
+
+        return ResponseModel.Success("Logged out successfully");
     }
 
     private static string GenerateAccessCode()

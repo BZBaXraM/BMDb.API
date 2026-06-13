@@ -1,42 +1,96 @@
-<div class="container mx-auto px-4 py-8">
-	<div class="text-center mb-6">
+<section class="mx-auto max-w-6xl px-6 py-20">
+	<!-- Editorial header (asymmetric) -->
+	<div
+		class="flex flex-col gap-6 border-b border-line pb-10 md:flex-row md:items-end md:justify-between"
+	>
+		<div class="max-w-2xl">
+			<p class="mb-4 text-xs uppercase tracking-[0.25em] text-accent">
+				The Archive
+			</p>
+			<h1
+				class="font-display text-5xl font-light leading-[0.95] tracking-tight text-ink md:text-7xl"
+			>
+				Every film,<br />in its place.
+			</h1>
+		</div>
 		<button
 			(click)="getRandomMovie()"
-			class="px-6 py-3 text-xl rounded-lg bg-blue-400 text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+			class="group inline-flex items-center gap-3 self-start text-sm uppercase tracking-[0.15em] text-ink-soft transition-colors duration-200 hover:text-ink md:self-auto"
 		>
-			Get Random Movies
+			<span
+				class="inline-block transition-transform duration-300 group-hover:rotate-180"
+				>↻</span
+			>
+			Shuffle the deck
 		</button>
 	</div>
-	<div class="pt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-		@for (movie of movie(); track movie.id) {
+
+	<!-- Errors -->
+	@if (errors().length) {
+	<div class="mt-10 border-l-2 border-accent bg-paper-2 px-5 py-4">
+		@for (error of errors(); track $index) {
+		<p class="text-sm text-ink-soft">{{ error }}</p>
+		}
+	</div>
+	}
+
+	<!-- Loading skeletons -->
+	@if (loading()) {
+	<div
+		class="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4"
+	>
+		@for (s of skeletons; track $index) {
+		<div>
+			<div class="skeleton aspect-[4/5] w-full"></div>
+			<div class="skeleton mt-4 h-4 w-3/4"></div>
+			<div class="skeleton mt-2 h-3 w-1/2"></div>
+		</div>
+		}
+	</div>
+	}
+
+	<!-- Movie grid -->
+	@else {
+	<div
+		class="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4"
+	>
+		@for (movie of movie(); track movie.id; let i = $index) {
 		<a
 			[routerLink]="['/movies', movie.id]"
-			class="bg-gray-200 dark:bg-gray-800 p-3 shadow-md rounded-lg hover:translate-y-1 hover:bg-gray-100 hover:dark:bg-gray-700 transition-transform duration-300 block"
+			class="fade-up group block"
+			[style.animation-delay]="i * 40 + 'ms'"
 		>
-			<img
-				[alt]="movie.title"
-				[src]="movie.poster"
-				class="w-full object-cover mb-2"
-			/>
-			<p class="mb-2 text-lg italic text-gray-900 dark:text-gray-100">
-				{{ movie.title }}
-			</p>
-			<p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
-				Released: {{ movie.year }}
-			</p>
-			<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-				Director: {{ movie.director }}
-			</p>
-			<div class="flex flex-wrap gap-1 mt-1">
-				@for (genres of movie.genres; track $index) {
-				<span
-					class="text-xs bg-blue-200 text-gray-700 dark:text-gray-800 px-2 py-0.5 rounded-full"
+			<div class="relative overflow-hidden bg-paper-2">
+				<img
+					[alt]="movie.title"
+					[src]="movie.poster"
+					loading="lazy"
+					class="aspect-[4/5] w-full object-cover grayscale transition-all duration-300 ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
+				/>
+			</div>
+			<div class="mt-4">
+				<h3
+					class="font-display text-lg font-normal leading-tight text-ink transition-colors duration-200 group-hover:text-accent"
 				>
-					{{ genres }}
-				</span>
+					{{ movie.title }}
+				</h3>
+				<p
+					class="mt-1 text-xs uppercase tracking-[0.12em] text-ink-soft"
+				>
+					{{ movie.year }} · {{ movie.director }}
+				</p>
+				@if (movie.genres.length) {
+				<p class="mt-2 text-xs italic text-ink-soft">
+					{{ movie.genres.join(', ') }}
+				</p>
 				}
 			</div>
 		</a>
+		} @empty {
+		<p class="col-span-full py-16 text-center text-ink-soft">
+			No films to show yet.
+		</p>
 		}
 	</div>
-</div>
+	}
+</section>

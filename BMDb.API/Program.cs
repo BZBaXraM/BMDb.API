@@ -27,10 +27,9 @@ app.UseHsts();
 
 app.UseRouting();
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<BlackListMiddleware>();
 
 app.UseAuthentication();

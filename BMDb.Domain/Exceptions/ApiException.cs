@@ -1,4 +1,4 @@
-namespace BMDb.Core.Exceptions;
+namespace BMDb.Domain.Exceptions;
 
 public class ApiException(int statusCode, string message, string? details)
 {

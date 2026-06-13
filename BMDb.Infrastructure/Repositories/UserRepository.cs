@@ -2,48 +2,48 @@ namespace BMDb.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly AuthContext _authContext;
+    private readonly MovieContext _context;
 
-    public UserRepository(AuthContext authContext)
+    public UserRepository(MovieContext context)
     {
-        _authContext = authContext;
+        _context = context;
     }
 
     public async Task<User> AddUserAsync(User user)
     {
-        await _authContext.Users.AddAsync(user);
+        await _context.Users.AddAsync(user);
 
-        await _authContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return user;
     }
 
     public async Task<User> GetAccessCodeAsync(string accessCode)
     {
-        return (await _authContext.Users
+        return (await _context.Users
             .FirstOrDefaultAsync(u => u.AccessCode == accessCode))!;
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
-        return (await _authContext.Users
+        return (await _context.Users
             .FirstOrDefaultAsync(u => u.Email == email))!;
     }
 
     public async Task<User> GetUserByRefreshTokenAsync(string refreshToken)
     {
-        return (await _authContext.Users
+        return (await _context.Users
             .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken))!;
     }
 
     public async Task<User?> GetUserDataAsync(string accessToken, string? userName)
     {
-        return await _authContext.Users
+        return await _context.Users
             .FirstOrDefaultAsync(u => u.AccessCode == accessToken || u.AccessCode == userName);
     }
 
     public async Task<int> SaveUserAsync()
     {
-        return await _authContext.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 }

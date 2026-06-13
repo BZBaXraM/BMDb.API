@@ -8,7 +8,7 @@ public interface IAdminService
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<ResponseModel<MovieResponse>> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method is used to add a movie.
@@ -16,7 +16,7 @@ public interface IAdminService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse> AddMovieAsync(AddMovieRequest request, CancellationToken cancellationToken = default);
+    Task<ResponseModel<MovieResponse>> AddMovieAsync(AddMovieRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method is used to update a movie.
@@ -24,7 +24,7 @@ public interface IAdminService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<MovieResponse?> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
+    Task<ResponseModel<MovieResponse>> UpdateMovieAsync(Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -33,5 +33,5 @@ public interface IAdminService
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<ResponseModel> DeleteMovieAsync(Guid id, CancellationToken cancellationToken = default);
 }

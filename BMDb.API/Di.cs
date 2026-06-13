@@ -1,5 +1,3 @@
-using Microsoft.OpenApi;
-
 namespace BMDb.API;
 
 /// <summary>

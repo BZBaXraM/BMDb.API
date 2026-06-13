@@ -6,18 +6,18 @@ public static class DatabaseExtensions
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
-        var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
+        // var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
 
         await context.Database.MigrateAsync();
-        await authContext.Database.MigrateAsync();
+        // await authContext.Database.MigrateAsync();
         
-        await SeedAsync(context, authContext);
+        await SeedAsync(context);
     }
 
-    private static async Task SeedAsync(MovieContext context, AuthContext authContext)
+    private static async Task SeedAsync(MovieContext context)
     {
         await SeedMoviesAsync(context);
-        await SeedAuthAsync(authContext);
+        // await SeedAuthAsync(authContext);
     }
 
     private static async Task SeedMoviesAsync(MovieContext context)
@@ -26,15 +26,15 @@ public static class DatabaseExtensions
         {
             await context.Movies.AddRangeAsync(InitData.Movies);
             await context.SaveChangesAsync();
-        }
-    }
-
-    private static async Task SeedAuthAsync(AuthContext context)
-    {
-        if (!await context.Users.AnyAsync())
-        {
             await context.Database.ExecuteSqlRawAsync("DELETE FROM  \"Users\"");
             await context.SaveChangesAsync();
         }
     }
+
+    // private static async Task SeedAuthAsync(AuthContext context)
+    // {
+    //     if (!await context.Users.AnyAsync())
+    //     {
+    //     }
+    // }
 }

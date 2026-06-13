@@ -1,6 +1,6 @@
 namespace BMDb.Core.DTOs;
 
-public class MoviesQueryDto
+public class MoviesQueryResponse
 {
     public string? FilterOn { get; set; } 
     public string? FilterQuery { get; set; }

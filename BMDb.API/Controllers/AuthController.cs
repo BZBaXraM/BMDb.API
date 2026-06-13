@@ -24,11 +24,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> RegisterAsync([FromBody] RegisterRequest request)
+    public async Task<ActionResult<ResponseModel<AuthResponse>>> RegisterAsync([FromBody] RegisterRequest request)
     {
-        await _service.RegisterUserAsync(request);
+        var response = await _service.RegisterUserAsync(request);
 
-        return Ok("Check your email for the access code.");
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -37,9 +37,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginRequest request)
+    public async Task<ActionResult<ResponseModel<AuthResponse>>> LoginAsync([FromBody] LoginRequest request)
     {
-        return Ok(await _service.LoginUserAsync(request));
+        var response = await _service.LoginUserAsync(request);
+
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -48,11 +50,11 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<TokenDto>> GetRefreshTokenAsync([FromBody] RefreshTokenRequest request)
+    public async Task<ActionResult<ResponseModel<TokenResponse>>> GetRefreshTokenAsync([FromBody] RefreshTokenRequest request)
     {
-        var token = await _service.GetNewRefreshTokenAsync(request);
+        var response = await _service.GetNewRefreshTokenAsync(request);
 
-        return Ok(token);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -61,22 +63,22 @@ public class AuthController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("forget-access-code")]
-    public async Task<IActionResult> ForgetAccessCodeAsync([FromBody] ForgetAccessCodeRequestDto request)
+    public async Task<ActionResult<ResponseModel>> ForgetAccessCodeAsync([FromBody] ForgetAccessCodeRequest request)
     {
-        await _service.ForgetAccessCodeAsync(request);
-        return Ok("Access code forgotten successfully");
+        var response = await _service.ForgetAccessCodeAsync(request);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
     /// Logs out the user by invalidating their access token and clearing their refresh token.
     /// </summary>
-    /// <param name="dto"></param>
+    /// <param name="response"/>
     /// <returns></returns>
     [HttpPost("logout")]
     [Authorize]
-    public async Task<IActionResult> LogoutAsync([FromBody] TokenDto dto)
+    public async Task<ActionResult<ResponseModel>> LogoutAsync([FromBody] TokenResponse response)
     {
-        await _service.LogoutAsync(dto.AccessToken, User.Identity?.Name);
-        return Ok("Logged out successfully");
+        var responseModel = await _service.LogoutAsync(response.AccessToken, User.Identity?.Name);
+        return StatusCode(responseModel.StatusCode, response);
     }
 }

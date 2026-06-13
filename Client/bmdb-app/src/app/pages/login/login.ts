@@ -8,10 +8,11 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ThemeToggle } from '../../components/theme-toggle/theme-toggle';
 
 @Component({
 	selector: 'app-login',
-	imports: [ReactiveFormsModule, CommonModule],
+	imports: [ReactiveFormsModule, CommonModule, ThemeToggle],
 	templateUrl: './login.html',
 	styleUrl: './login.css',
 })

@@ -1,10 +1,11 @@
-namespace BMDb.Infrastructure.Data;
-
-public class AuthContext : DbContext
-{
-    public AuthContext(DbContextOptions<AuthContext> options) : base(options)
-    {
-    }
-
-    public virtual DbSet<User> Users => Set<User>();
-}
+// namespace BMDb.Infrastructure.Data;
+//
+// public class AuthContext : DbContext
+// {
+//     public AuthContext(DbContextOptions<AuthContext> options) : base(options)
+//     {
+//     }
+//
+//     public virtual DbSet<User> Users => Set<User>();
+//     
+// }

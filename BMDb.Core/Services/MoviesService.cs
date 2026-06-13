@@ -14,35 +14,39 @@ public class MoviesService : IMoviesService
         _moviesRepository = moviesRepository;
     }
 
-    public async Task<List<MovieResponse>> GetMoviesAsync(MoviesQueryDto dto,
+    public async Task<ResponseModel<List<MovieResponse>>> GetMoviesAsync(MoviesQueryResponse response,
         CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetMoviesAsync(
-            dto.FilterOn, dto.FilterQuery, dto.SortBy, dto.IsAscending ?? true,
-            dto.PageNumber, dto.PageSize, dto.Title, dto.Genre, dto.Director, dto.Year,
+            response.FilterOn, response.FilterQuery, response.SortBy, response.IsAscending ?? true,
+            response.PageNumber, response.PageSize, response.Title, response.Genre, response.Director, response.Year,
             cancellationToken);
 
-        return movies.Select(x => x.ToDto()).ToList();
+        return ResponseModel.Success(movies.Select(x => x.ToDto()).ToList());
     }
 
 
-    public async Task<MovieResponse?> GetMovieByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ResponseModel<MovieResponse>> GetMovieByIdAsync(Guid id,
+        CancellationToken cancellationToken = default)
     {
         var movie = await _moviesRepository.GetByIdAsync(id, cancellationToken);
-        return movie?.ToDto();
+
+        return movie == null
+            ? ResponseModel.Failure<MovieResponse>($"Movie with id {id} not found", 404)
+            : ResponseModel.Success(movie.ToDto());
     }
 
-    public async Task<IEnumerable<MovieResponse>> GetMovieByImdbIdAsync(string imdbId,
+    public async Task<ResponseModel<IEnumerable<MovieResponse>>> GetMovieByImdbIdAsync(string imdbId,
         CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetMovieByImdbIdAsync(imdbId, cancellationToken);
-        return movies.Select(x => x.ToDto()).ToList();
+        return ResponseModel.Success(movies.Select(x => x.ToDto()));
     }
 
-    public async Task<IEnumerable<MovieResponse>> GetRandomMoviesAsync(int limit = 10,
+    public async Task<ResponseModel<IEnumerable<MovieResponse>>> GetRandomMoviesAsync(int limit = 10,
         CancellationToken cancellationToken = default)
     {
         var movies = await _moviesRepository.GetRandomMoviesAsync(limit, cancellationToken);
-        return movies.Select(x => x.ToDto()).ToList();
+        return ResponseModel.Success(movies.Select(x => x.ToDto()));
     }
 }

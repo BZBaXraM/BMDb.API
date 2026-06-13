@@ -1,6 +1,6 @@
 namespace BMDb.Core.DTOs;
 
-public class UserDto
+public class UserResponse
 {
     public required string Email { get; set; }
     public required string AccessCode { get; set; }

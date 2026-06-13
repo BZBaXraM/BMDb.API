@@ -30,9 +30,9 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> AddMovieAsync([FromBody] AddMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        var movie = await _service.AddMovieAsync(request, cancellationToken);
+        var response = await _service.AddMovieAsync(request, cancellationToken);
 
-        return CreatedAtAction(nameof(GetMovieById), new { id = movie.Id }, movie);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -47,7 +47,9 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> UpdateMovieAsync([FromRoute] Guid id, UpdateMovieRequest request,
         CancellationToken cancellationToken = default)
     {
-        return Ok(await _service.UpdateMovieAsync(id, request, cancellationToken));
+        var response = await _service.UpdateMovieAsync(id, request, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -59,8 +61,8 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> DeleteMovieAsync([FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        await _service.DeleteMovieAsync(id, cancellationToken);
-        return NoContent();
+        var response = await _service.DeleteMovieAsync(id, cancellationToken);
+        return StatusCode(response.StatusCode, response);
     }
 
     /// <summary>
@@ -72,6 +74,8 @@ public class AdminController : ControllerBase
     [HttpGet("get-by-id/{id:guid}")]
     public async Task<IActionResult> GetMovieById([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
-        return Ok(await _service.GetMovieByIdAsync(id, cancellationToken));
+        var response = await _service.GetMovieByIdAsync(id, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
     }
 }

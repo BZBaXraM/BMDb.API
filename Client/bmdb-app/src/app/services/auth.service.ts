@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Router } from '@angular/router';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, map, tap, throwError } from 'rxjs';
 import { Token } from '../models/token.model';
 import { LoginModel } from '../models/login.model';
 import { AuthResponse } from '../models/auth.model';
+import { ResponseModel } from '../models/response.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -59,8 +60,12 @@ export class AuthService {
 
 	login(payload: LoginModel) {
 		return this.http
-			.post<AuthResponse>(`${this.baseUrl}auth/login`, payload)
+			.post<ResponseModel<AuthResponse>>(
+				`${this.baseUrl}auth/login`,
+				payload
+			)
 			.pipe(
+				map((response) => response.data),
 				tap((user) => {
 					if (user) {
 						this.setCurrentUser(user);
@@ -77,10 +82,14 @@ export class AuthService {
 	refreshAuthToken() {
 		const refreshToken = localStorage.getItem('refreshToken');
 		return this.http
-			.post<AuthResponse>(`${this.baseUrl}auth/refresh`, {
-				refreshToken: refreshToken,
-			})
+			.post<ResponseModel<AuthResponse>>(
+				`${this.baseUrl}auth/refresh-token`,
+				{
+					refreshToken: refreshToken,
+				}
+			)
 			.pipe(
+				map((response) => response.data),
 				tap((user) => {
 					if (user) this.setCurrentUser(user);
 				}),
@@ -101,13 +110,16 @@ export class AuthService {
 			const payload: Partial<Token> = { accessToken: token };
 
 			this.http
-				.post(`${this.baseUrl}auth/logout`, payload, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'Content-Type': 'application/json',
-					},
-					responseType: 'text',
-				})
+				.post<ResponseModel<unknown>>(
+					`${this.baseUrl}auth/logout`,
+					payload,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-Type': 'application/json',
+						},
+					}
+				)
 				.subscribe({
 					next: () => {
 						this.clearLocalSession();

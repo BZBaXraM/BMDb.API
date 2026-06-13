@@ -7,4 +7,6 @@ public class MovieContext : DbContext
     }
 
     public virtual DbSet<Movie> Movies => Set<Movie>();
+    public virtual DbSet<User> Users => Set<User>();
+
 }

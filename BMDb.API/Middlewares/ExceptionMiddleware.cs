@@ -1,11 +1,5 @@
 namespace BMDb.API.Middlewares;
 
-/// <summary>
-/// Middleware to handle exceptions globally.
-/// </summary>
-/// <param name="next"></param>
-/// <param name="logger"></param>
-/// <param name="env"></param>
 public class ExceptionMiddleware(
     RequestDelegate next,
     ILogger<ExceptionMiddleware> logger,
@@ -37,7 +31,6 @@ public class ExceptionMiddleware(
             };
 
             var json = JsonSerializer.Serialize(response, options);
-
             await context.Response.WriteAsync(json);
         }
     }
