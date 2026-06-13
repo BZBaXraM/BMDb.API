@@ -1,6 +1,6 @@
 # BMDb API
 
-BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity Framework Core.
+BMDb API is a RESTful API for a movie database built with ASP.NET Core (.NET 10) and Entity Framework Core.
 
 ## Features
 
@@ -11,16 +11,14 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 
 ## Technologies Used
 
-- ASP.NET Core
+- ASP.NET Core (.NET 10)
 - Entity Framework Core
-- PostgresSQL
-
+- PostgreSQL
 - FluentValidation
-- JWT Bearer Authentication with Email Confirmation
-- Cors
+- JWT Bearer Authentication with email access-code confirmation (passwordless)
+- CORS
 - Serilog
 - Swagger
-- Amazon S3 for movie poster storage
 
 ## Endpoints
 
@@ -49,16 +47,17 @@ BMDb API a RESTful API for a movie database built with ASP.NET Core and Entity F
 - `POST /api/admin/add-movie` - Add a new movie
 - `PUT /api/admin/update-movie/{id}` - Update a movie
 - `DELETE /api/admin/delete-movie/{id}` - Delete a movie
-- `GET /api/movies/get-by-id/{id}` - Get a movie by ID
+- `GET /api/admin/get-by-id/{id}` - Get a movie by ID (admin)
 
 ## Architecture
 
 The project follows a clean architecture pattern with the following layers:
 
 - **Presentation Layer**: Contains the API controllers and Middlewares.
-- **Core Layer**: Contains the business logic and application services.
-- **Infrastructure Layer**: Contains the data access layer, including Entity Framework Core and repository pattern.
-- **Domain Layer**: Contains the domain entities.
+- **Core Layer**: Contains the business logic, application services, DTOs, and validators.
+- **Infrastructure Layer**: Contains the data access layer (Entity Framework Core, repositories), JWT
+  authentication wiring, and the JWT/email service implementations.
+- **Domain Layer**: Contains the domain entities, shared response models (`ResponseModel`), and exception types.
 
 ## Client
 
