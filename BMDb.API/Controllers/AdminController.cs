@@ -11,7 +11,7 @@ public class AdminController : ControllerBase
     private readonly IAdminService _service;
 
     /// <summary>
-    /// Constructor is used to inject the MovieContext class.
+    /// Constructor for the AdminController
     /// </summary>
     /// <param name="service"></param>
     public AdminController(IAdminService service)

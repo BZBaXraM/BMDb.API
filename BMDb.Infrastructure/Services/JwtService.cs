@@ -1,11 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using BMDb.Core.Configs;
-using BMDb.Core.ServiceContracts;
-using Microsoft.IdentityModel.Tokens;
-
 namespace BMDb.Infrastructure.Services;
 
 /// <summary>

@@ -1,10 +1,3 @@
-using BMDb.Core.Configs;
-using BMDb.Core.ServiceContracts;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.Extensions.Options;
-using MimeKit;
-
 namespace BMDb.Infrastructure.Services;
 
 public class EmailService : IEmailService
